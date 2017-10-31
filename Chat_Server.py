@@ -3,6 +3,7 @@ import sys
 import queue
 import threading
 from threading import Thread
+import re
 
 no_of_clients_connected = 0
 
@@ -20,9 +21,16 @@ class Client_Thread(Thread):
         username = "<" + client_ip + "," + str(client_port) + ">"
         print("from thread no : of threads : " + str(no_of_clients_connected))
         #if no_of_clients_connected == 1:
+        msg_from_client=self.socket.recv(buff_size).decode()
+        print("Message from Client : " +username+ ":" + msg_from_client)
+        msg_split = re.findall(r"[\w']+", msg_from_client)
+        chatroom = msg_split[1]
+        join_msgto_client = "JOINED_CHATROOM: " + str(chatroom) + "\nSERVER_IP: "+str(ip)+"\nPORT: "+str(port)+"\nROOM_REF: 1"+"\nJOIN_ID: 1"
+        self.socket.send(join_msgto_client.encode())
         while True:
             msg_from_client=self.socket.recv(buff_size).decode()
-
+            print("Message from Client : " +username+ ":" + msg_from_client)
+            #print("Message from Client : " +username+ ":" + msg_from_client)
             if "Bye" in msg_from_client:
                 message = username + "left from chat!!!"
                 lock.acquire()
