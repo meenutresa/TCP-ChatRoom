@@ -23,13 +23,13 @@ class Server_Thread(Thread):
             msg_to_client = input("Enter the message : ")
             self.socket.send(msg_to_client.encode())
             msg_from_server = self.socket.recv(buff_size).decode()
-            if "Bye" in msg_from_server:
+            if "LEFT_CHATROOM" in msg_from_server:
                 #msg_from_server = self.socket.recv(buff_size).decode()
-                #print("<Me> : " + msg_from_server)
+                print(msg_from_server)
                 self.socket.close()
                 sys.exit()
             else:
-                print("<Me> :  " + msg_from_server)
+                print(msg_from_server)
 
 
 class Server_Broadcast_Thread(Thread):

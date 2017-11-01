@@ -99,16 +99,16 @@ class Client_Thread(Thread):
         lock.release()
         while True:
             msg_from_client=self.socket.recv(buff_size).decode()
-            print("Message from Client : " +username+ ":" + msg_from_client)
+            print("Message from Client : " +self.client_name+ ":" + msg_from_client)
             #print("Message from Client : " +username+ ":" + msg_from_client)
-            if "Bye" in msg_from_client:
-                message = username + "left from chat!!!"
+            if "LEAVE_CHATROOM" in msg_from_client:
+                message = self.client_name + " left from chat!!!"
                 allusers_in_room = self.get_users_in_room()
                 lock.acquire()
                 #del send_queues[self.socket.fileno()]
                 Tosend_fileno = []
                 for user_id in allusers_in_room:
-                    print("userid : ",user_id)
+                    #print("userid : ",user_id)
                     Tosend_fileno.append(self.get_user_fileno(user_id))
                 for i, j in zip(send_queues.values(), send_queues):
                     if j in Tosend_fileno and j != self.socket.fileno():
@@ -118,24 +118,24 @@ class Client_Thread(Thread):
                 self.remove_user_from_room()
                 self.reduce_roomcount_user()
                 self.delete_user_fileno()
-                msg = "Bye"
+                msg = "LEFT_CHATROOM: " + str(self.room_ref) + "\nJOIN_ID: " + str(self.join_id)
                 self.socket.send(msg.encode())
                 break;
             else:
                 message = msg_from_client
-                msg = self.client_name + " : " + message
+                msg = "CHAT: " + str(self.room_ref) + "\nCLIENT_NAME: " + str(self.client_name) + "\nMESSAGE: " + str(message) + "\n\n"
                 allusers_in_room = self.get_users_in_room()
                 #print("user_fileno : ", user_fileno)
                 lock.acquire()
                 Tosend_fileno = []
                 for user_id in allusers_in_room:
-                    print("userid : ",user_id)
+                    #print("userid : ",user_id)
                     Tosend_fileno.append(self.get_user_fileno(user_id))
                 for i, j in zip(send_queues.values(), send_queues):
-                    if j in Tosend_fileno:
+                    if j in Tosend_fileno and j != self.socket.fileno():
                         i.put(msg)
                 lock.release()
-                self.socket.send(message.encode())
+                self.socket.send(msg.encode())
                 #print("from thread no : of threads : " + str(no_of_clients_connected))
 
 class Client_Broadcast_Thread(Thread):
