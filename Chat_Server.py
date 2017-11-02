@@ -7,9 +7,9 @@ import re
 import random
 
 no_of_clients_connected = 0
-chatroom_dict = {"room1":1,"room2":2,"room3":3,"room4":4,"room5":5}
+chatroom_dict = {}
 user_dict = {}
-user_room = {1:[],2:[],3:[],4:[],5:[]}
+user_room = {}
 roomcount_user = {}
 user_fileno = {}
 
@@ -22,7 +22,13 @@ class Client_Thread(Thread):
         print ("New Client Thread started")
 
     def get_roomID(self):
-        return chatroom_dict[self.chatroom.lower()]
+        for chatrm in chatroom_dict:
+            if chatrm == self.chatroom:
+                return chatroom_dict[self.chatroom]
+        value = len(chatroom_dict)+1
+        chatroom_dict[self.chatroom.lower()]=value
+        return value
+
     def get_clientID(self):
         for id in user_dict:
             if id == self.client_name:
@@ -33,8 +39,13 @@ class Client_Thread(Thread):
         value = len(user_dict)+1
         user_dict[self.client_name]=value
         return value
+
     def set_user_room(self):
-        user_room[self.room_ref].append(self.join_id)
+        for room in user_room:
+            if self.room_ref == room:
+                user_room[self.room_ref].append(self.join_id)
+                return
+        user_room[self.room_ref] = [self.join_id]
 
     def set_roomcount_user(self):
         for user in roomcount_user:
