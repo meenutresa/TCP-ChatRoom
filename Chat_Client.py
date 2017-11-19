@@ -31,7 +31,7 @@ class Server_Thread(Thread):
             else:
                 print(msg_from_server)
 
-
+"""
 class Server_Broadcast_Thread(Thread):
     def __init__(self,socket):
         Thread.__init__(self)
@@ -43,6 +43,7 @@ class Server_Broadcast_Thread(Thread):
         while True:
             message = socket2.recv(buff_size).decode()
             print("\n" + message)
+"""
 
 
 buff_size = 2048
@@ -61,18 +62,20 @@ socket1.connect((ip, port))
 #socket2 =socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 #socket2.connect((ip, port2))
 
-msg_from_server=socket1.recv(buff_size).decode()
-print("Message from Server is : " + msg_from_server)
+#msg_from_server=socket1.recv(buff_size).decode()
+#print("Message from Server is : " + msg_from_server)
 
 server_thread = Server_Thread(socket1,chatroom,client_name,client_ip,client_port)
 server_thread.daemon = True
 server_thread.start()
 server_threads.append(server_thread)
 
+"""
 server_broadcast_thread = Server_Broadcast_Thread(socket1)
 server_broadcast_thread.daemon = True
 server_broadcast_thread.start()
 server_threads.append(server_broadcast_thread)
+"""
 
 while True:
     for st in server_threads:

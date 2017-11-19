@@ -12,6 +12,7 @@ user_dict = {}
 user_room = {}
 roomcount_user = {}
 user_fileno = {}
+send_queue_fileno_client = {}
 
 class Client_Thread(Thread):
     def __init__(self,socket,ip,port):
@@ -75,10 +76,23 @@ class Client_Thread(Thread):
     def delete_user_fileno(self):
         del user_fileno[(self.room_ref,self.join_id)]
 
+    def broadcast(self,file_no):
+        try:
+            message = send_queues[file_no].get(False)
+            print("Message in Broadcast class : " + message)
+            print("Broadcast socket: ",send_queue_fileno_client[file_no])
+            send_queue_fileno_client[file_no].send(message.encode())
+        except queue.Empty:
+            message = "No message to broadcast"
+        except KeyError as e:
+            pass
+    def broadcast_data(self):
+        send_queue_fileno_client[self.socket.fileno()] = self.socket
+
 
     def run(self):
-        message = "Hello Client"
-        self.socket.send(message.encode())
+        #message = "Hello Client"
+        #self.socket.send(message.encode())
         username = "<" + client_ip + "," + str(client_port) + ">"
         print("from thread no : of threads : " + str(no_of_clients_connected))
         #if no_of_clients_connected == 1:
@@ -92,6 +106,7 @@ class Client_Thread(Thread):
         self.set_user_room()
         self.set_roomcount_user()
         self.set_user_fileno()
+        self.broadcast_data()
         #print("user_fileno : ", user_fileno)
         join_msgto_client = "JOINED_CHATROOM: " + str(self.chatroom) + "\nSERVER_IP: "+str(ip)+"\nPORT: "+str(port)+"\nROOM_REF: "+str(self.room_ref)+"\nJOIN_ID: "+str(self.join_id)
         self.socket.send(join_msgto_client.encode())
@@ -107,7 +122,10 @@ class Client_Thread(Thread):
         for i, j in zip(send_queues.values(), send_queues):
             if j in Tosend_fileno:
                 i.put(join_message_to_room)
+                #self.broadcast(j)
         lock.release()
+        for ts in Tosend_fileno:
+            self.broadcast(ts)
         while True:
             msg_from_client=self.socket.recv(buff_size).decode()
             print("Message from Client : " +self.client_name+ ":" + msg_from_client)
@@ -131,6 +149,8 @@ class Client_Thread(Thread):
                     if j in Tosend_fileno and j != self.socket.fileno():
                         i.put(message)
                 lock.release()
+                for ts in Tosend_fileno:
+                    self.broadcast(ts)
 
                 self.remove_user_from_room()
                 self.reduce_roomcount_user()
@@ -152,9 +172,13 @@ class Client_Thread(Thread):
                     if j in Tosend_fileno and j != self.socket.fileno():
                         i.put(msg)
                 lock.release()
+                for ts in Tosend_fileno:
+                    self.broadcast(ts)
                 self.socket.send(msg.encode())
                 #print("from thread no : of threads : " + str(no_of_clients_connected))
 
+
+"""
 class Client_Broadcast_Thread(Thread):
     def __init__(self,socket):
         Thread.__init__(self)
@@ -173,20 +197,22 @@ class Client_Broadcast_Thread(Thread):
                 message = "No message to broadcast"
             except KeyError as e:
                 pass
+"""
+
 
 buff_size = 2048
 lock = threading.Lock()
 send_queues = {}
 ip = '0.0.0.0'
 port = int(sys.argv[1])
-port2 = 125
+port2 = 5000
 tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 tcp_socket.bind(('',port))
 
-tcp_socket2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-tcp_socket2.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-tcp_socket2.bind(('', port2))
+#tcp_socket2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#tcp_socket2.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+#tcp_socket2.bind(('', port2))
 
 client_threads = []
 while True:
@@ -202,6 +228,7 @@ while True:
     lock.acquire()
 
     send_queues[client_soc.fileno()] = q
+    #broadcast_data(client_soc,q)
     lock.release()
 
     print("<" + client_ip + "," + str(client_port) + "> connected")
@@ -210,11 +237,12 @@ while True:
     client_thread.daemon = True
     client_thread.start()
     client_threads.append(client_thread)
-
+""""
     client_broadcast_thread = Client_Broadcast_Thread(client_soc)
     client_broadcast_thread.daemon = True
     client_broadcast_thread.start()
     client_threads.append(client_broadcast_thread)
+    """
 
 for ct in client_threads:
     ct.join()
