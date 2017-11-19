@@ -71,6 +71,10 @@ class Client_Thread(Thread):
         #print("get_users_in_room : ",self.room_ref)
         return user_room[self.room_ref]
 
+    def get_users_in_room_chat_conv(self,conv_roomref):
+        #print("get_users_in_room : ",self.room_ref)
+        return user_room[conv_roomref]
+
     def set_user_fileno(self):
         user_fileno[(self.room_ref,self.join_id)] = self.socket.fileno()
 
@@ -169,11 +173,17 @@ class Client_Thread(Thread):
                 break;
             else:
                 message = msg_from_client
-                msg = "CHAT: " + str(self.room_ref) + "\nCLIENT_NAME: " + str(self.client_name) + "\nMESSAGE: " + str(message) + "\n\n"
-                print("Room_Ref : ", self.room_ref)
-                for rr in user_room:
-                    print(rr)
-                allusers_in_room = self.get_users_in_room()
+                print("Message : ", message)
+                msg_split = re.findall(r"[\w']+", msg_from_client)
+                print("Split message :", msg_split)
+                conv_client_name = msg_split[5]
+                conv_room_ref = msg_split[1]
+                conv_join_id = msg_split[3]
+                msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(message) + "\n\n"
+                #print("Room_Ref : ", self.room_ref)
+                #for rr in user_room:
+                #    print(rr)
+                allusers_in_room = self.get_users_in_room_chat_conv(conv_room_ref)
                 #print("user_fileno : ", user_fileno)
                 lock.acquire()
                 Tosend_fileno = []
