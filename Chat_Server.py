@@ -153,7 +153,8 @@ class Client_Thread(Thread):
             elif "KILL_SERVICE" in msg_from_client:
                 pass
             elif "LEAVE_CHATROOM" in msg_from_client:
-                message = self.client_name + " left from chat!!!"
+                message = self.client_name + " has left this chatroom!!!"
+                leave_message_format = "CHAT: "+ str(self.room_ref) + "\nCLIENT_NAME: "+str(self.client_name) + "\nMESSAGE: "+str(message)+"\n"
                 allusers_in_room = self.get_users_in_room()
                 lock.acquire()
                 #del send_queues[self.socket.fileno()]
@@ -163,7 +164,7 @@ class Client_Thread(Thread):
                     Tosend_fileno.append(self.get_user_fileno(user_id))
                 for i, j in zip(send_queues.values(), send_queues):
                     if j in Tosend_fileno and j != self.socket.fileno():
-                        i.put(message)
+                        i.put(leave_message_format)
                 lock.release()
                 for ts in Tosend_fileno:
                     self.broadcast(ts)
