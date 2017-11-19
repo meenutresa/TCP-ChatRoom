@@ -115,6 +115,7 @@ class Client_Thread(Thread):
             #print("Message from Client : " +self.client_name+ ":" + msg_from_client)
             #print("Message from Client : " +username+ ":" + msg_from_client)
             if "JOIN_CHATROOM" in msg_from_client:
+                print("Message : ", msg_from_client)
                 msg_split = re.findall(r"[\w']+", msg_from_client)
                 self.chatroom = msg_split[1]
                 self.client_name = msg_split[7]
@@ -145,14 +146,17 @@ class Client_Thread(Thread):
                 for ts in Tosend_fileno:
                     self.broadcast(ts)
             elif "HELO" in msg_from_client:
+                print("Message : ", msg_from_client)
                 host_name = socket.gethostname()
                 host_ip = socket.gethostbyname(host_name)
                 host_port = port
                 message = str(msg_from_client)+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
                 self.socket.send(message.encode())
             elif "KILL_SERVICE" in msg_from_client:
+                print("Message : ", msg_from_client)
                 pass
             elif "LEAVE_CHATROOM" in msg_from_client:
+                print("Message : ", msg_from_client)
                 msg_split = re.findall(r"[\w']+", msg_from_client)
                 print("Split message :", msg_split)
                 leave_client_name = msg_split[5]
@@ -181,6 +185,7 @@ class Client_Thread(Thread):
                 self.delete_user_fileno()
                 break;
             else:
+                print("Message : ", msg_from_client)
                 message = msg_from_client
                 print("Message : ", message)
                 msg_split = re.findall(r"[\w']+", msg_from_client)
