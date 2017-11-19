@@ -129,7 +129,8 @@ class Client_Thread(Thread):
                 self.socket.send(join_msgto_client.encode())
                 allusers_in_room = self.get_users_in_room()
                 #print("\nall users in room :",allusers_in_room)
-                join_message_to_room = str(self.client_name) + " joined Chatroom\n"
+                join_message_to_room = str(self.client_name) + " has joined this chatroom\n"
+                join_message_to_room_format = "CHAT: "+ str(self.room_ref) + "\nCLIENT_NAME: "+str(self.client_name) + "\nMESSAGE: "+str(join_message_to_room)+"\n"
                 lock.acquire()
                 #print("\nsend_queues :" , send_queues)
                 #del send_queues[self.socket.fileno()]
@@ -138,7 +139,7 @@ class Client_Thread(Thread):
                     Tosend_fileno.append(self.get_user_fileno(user_id))
                 for i, j in zip(send_queues.values(), send_queues):
                     if j in Tosend_fileno:
-                        i.put(join_msgto_client)
+                        i.put(join_message_to_room_format)
                         #self.broadcast(j)
                 lock.release()
                 for ts in Tosend_fileno:
