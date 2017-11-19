@@ -180,9 +180,9 @@ class Client_Thread(Thread):
                 lock.release()
                 for ts in Tosend_fileno:
                     self.broadcast(ts)
-                self.remove_user_from_room()
-                self.reduce_roomcount_user()
-                self.delete_user_fileno()
+                #self.remove_user_from_room()
+                #self.reduce_roomcount_user()
+                #self.delete_user_fileno()
                 #break;
             else:
                 print("Message : ", msg_from_client)
@@ -212,6 +212,7 @@ class Client_Thread(Thread):
                     self.broadcast(ts)
                 self.socket.send(msg.encode())
                 #print("from thread no : of threads : " + str(no_of_clients_connected))
+        print("Out of while loop")
 
 
 """
