@@ -88,7 +88,7 @@ class Client_Thread(Thread):
         try:
             message = send_queues[file_no].get(False)
             print("Message in Broadcast class : " + message)
-            print("Broadcast socket: ",send_queue_fileno_client[file_no])
+            #print("Broadcast socket: ",send_queue_fileno_client[file_no])
             send_queue_fileno_client[file_no].send(message.encode())
         except queue.Empty:
             message = "No message to broadcast"
@@ -183,7 +183,7 @@ class Client_Thread(Thread):
                 self.remove_user_from_room()
                 self.reduce_roomcount_user()
                 self.delete_user_fileno()
-                break;
+                #break;
             else:
                 print("Message : ", msg_from_client)
                 message = msg_from_client
