@@ -74,7 +74,7 @@ class Client_Thread(Thread):
     def get_users_in_room_chat_conv(self,conv_roomref):
         #print("get_users_in_room : ",self.room_ref)
         print("conv_roomref : ",conv_roomref)
-        for xyz,val in user_room.iteritems():
+        for xyz,val in user_room.items():
             print("user_room :",xyz , val)
         return user_room[conv_roomref]
 
@@ -162,7 +162,7 @@ class Client_Thread(Thread):
                 leave_room_ref = msg_split[1]
                 leave_join_id = msg_split[3]
 
-                for xyz,val in user_room.iteritems():
+                for xyz,val in user_room.items():
                     print("user_room :",xyz , val)
 
                 msg = "LEFT_CHATROOM: " + str(leave_room_ref) + "\nJOIN_ID: " + str(leave_join_id)+"\n"
