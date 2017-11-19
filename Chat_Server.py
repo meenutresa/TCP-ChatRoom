@@ -153,11 +153,17 @@ class Client_Thread(Thread):
             elif "KILL_SERVICE" in msg_from_client:
                 pass
             elif "LEAVE_CHATROOM" in msg_from_client:
-                msg = "LEFT_CHATROOM: " + str(self.room_ref) + "\nJOIN_ID: " + str(self.join_id)+"\n"
+                msg_split = re.findall(r"[\w']+", msg_from_client)
+                print("Split message :", msg_split)
+                leave_client_name = msg_split[5]
+                leave_room_ref = msg_split[1]
+                leave_join_id = msg_split[3]
+
+                msg = "LEFT_CHATROOM: " + str(leave_room_ref) + "\nJOIN_ID: " + str(leave_join_id)+"\n"
                 self.socket.send(msg.encode())
-                message = self.client_name + " has left this chatroom!!!"
-                leave_message_format = "CHAT: "+ str(self.room_ref) + "\nCLIENT_NAME: "+str(self.client_name) + "\nMESSAGE: "+str(message)+"\n"
-                allusers_in_room = self.get_users_in_room()
+                message = leave_client_name + " has left this chatroom!!!"
+                leave_message_format = "CHAT: "+ str(leave_room_ref) + "\nCLIENT_NAME: "+str(leave_client_name) + "\nMESSAGE: "+str(message)+"\n"
+                allusers_in_room = self.get_users_in_room_chat_conv(leave_room_ref)
                 lock.acquire()
                 #del send_queues[self.socket.fileno()]
                 Tosend_fileno = []
