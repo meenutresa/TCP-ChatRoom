@@ -171,6 +171,8 @@ class Client_Thread(Thread):
                 msg = "LEFT_CHATROOM: " + str(self.room_ref) + "\nJOIN_ID: " + str(self.join_id)
                 self.socket.send(msg.encode())
                 break;
+            elif "KILL_SERVICE" in msg_from_client:
+                
             else:
                 message = msg_from_client
                 print("Message : ", message)
