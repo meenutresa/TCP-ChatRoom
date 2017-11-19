@@ -138,7 +138,7 @@ class Client_Thread(Thread):
                     Tosend_fileno.append(self.get_user_fileno(user_id))
                 for i, j in zip(send_queues.values(), send_queues):
                     if j in Tosend_fileno:
-                        i.put(join_message_to_room)
+                        i.put(join_msgto_client)
                         #self.broadcast(j)
                 lock.release()
                 for ts in Tosend_fileno:
