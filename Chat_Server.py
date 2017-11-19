@@ -125,7 +125,7 @@ class Client_Thread(Thread):
                 self.set_user_fileno()
                 self.broadcast_data()
                 #print("user_fileno : ", user_fileno)
-                join_msgto_client = "JOINED_CHATROOM: " + str(self.chatroom) + "\nSERVER_IP: "+str(ip)+"\nPORT: "+str(port)+"\nROOM_REF: "+str(self.room_ref)+"\nJOIN_ID: "+str(self.join_id)
+                join_msgto_client = "JOINED_CHATROOM: " + str(self.chatroom) + "\nSERVER_IP: "+str(ip)+"\nPORT: "+str(port)+"\nROOM_REF: "+str(self.room_ref)+"\nJOIN_ID: "+str(self.join_id)+"\n"
                 self.socket.send(join_msgto_client.encode())
                 allusers_in_room = self.get_users_in_room()
                 #print("\nall users in room :",allusers_in_room)
