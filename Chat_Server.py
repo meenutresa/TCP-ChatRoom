@@ -170,6 +170,9 @@ class Client_Thread(Thread):
             else:
                 message = msg_from_client
                 msg = "CHAT: " + str(self.room_ref) + "\nCLIENT_NAME: " + str(self.client_name) + "\nMESSAGE: " + str(message) + "\n\n"
+                print("Room_Ref : ", self.room_ref)
+                for rr in user_room:
+                    print(rr)
                 allusers_in_room = self.get_users_in_room()
                 #print("user_fileno : ", user_fileno)
                 lock.acquire()
