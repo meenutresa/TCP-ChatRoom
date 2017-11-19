@@ -76,7 +76,7 @@ class Client_Thread(Thread):
         print("conv_roomref : ",conv_roomref)
         for xyz,val in user_room.items():
             print("user_room :",xyz , val)
-        print(user_room)
+        print(user_room[1])
         return user_room[conv_roomref]
 
     def set_user_fileno(self):
@@ -160,7 +160,7 @@ class Client_Thread(Thread):
                 msg_split = re.findall(r"[\w']+", msg_from_client)
                 print("Split message :", msg_split)
                 leave_client_name = msg_split[5]
-                leave_room_ref = msg_split[1]
+                leave_room_ref = int(msg_split[1])
                 leave_join_id = msg_split[3]
 
                 for xyz,val in user_room.items():
