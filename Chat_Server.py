@@ -171,7 +171,7 @@ class Client_Thread(Thread):
                 self.remove_user_from_room()
                 self.reduce_roomcount_user()
                 self.delete_user_fileno()
-                msg = "LEFT_CHATROOM: " + str(self.room_ref) + "\nJOIN_ID: " + str(self.join_id)
+                msg = "LEFT_CHATROOM: " + str(self.room_ref) + "\nJOIN_ID: " + str(self.join_id)+"\n"
                 self.socket.send(msg.encode())
                 break;
             else:
@@ -182,7 +182,7 @@ class Client_Thread(Thread):
                 conv_client_name = msg_split[5]
                 conv_room_ref = msg_split[1]
                 conv_join_id = msg_split[3]
-                msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(message) + "\n\n"
+                msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(message) + "\n"
                 #print("Room_Ref : ", self.room_ref)
                 #for rr in user_room:
                 #    print(rr)
