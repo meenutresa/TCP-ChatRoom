@@ -112,7 +112,13 @@ class Client_Thread(Thread):
             msg_from_client=self.socket.recv(buff_size).decode()
             print("Message from Client : " +self.client_name+ ":" + msg_from_client)
             #print("Message from Client : " +username+ ":" + msg_from_client)
-            if "LEAVE_CHATROOM" in msg_from_client:
+            if "HELO" in msg_from_client:
+                host_name = socket.gethostname()
+                host_ip = socket.gethostbyname(host_name)
+                host_port = port
+                message = str(msg_from_client)+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
+                self.socket.send(message.encode())
+            elif "LEAVE_CHATROOM" in msg_from_client:
                 message = self.client_name + " left from chat!!!"
                 allusers_in_room = self.get_users_in_room()
                 lock.acquire()
