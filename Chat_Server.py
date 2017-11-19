@@ -149,6 +149,8 @@ class Client_Thread(Thread):
                 host_port = port
                 message = str(msg_from_client)+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
                 self.socket.send(message.encode())
+            elif "KILL_SERVICE" in msg_from_client:
+                pass
             elif "LEAVE_CHATROOM" in msg_from_client:
                 message = self.client_name + " left from chat!!!"
                 allusers_in_room = self.get_users_in_room()
@@ -171,8 +173,6 @@ class Client_Thread(Thread):
                 msg = "LEFT_CHATROOM: " + str(self.room_ref) + "\nJOIN_ID: " + str(self.join_id)
                 self.socket.send(msg.encode())
                 break;
-            elif "KILL_SERVICE" in msg_from_client:
-                
             else:
                 message = msg_from_client
                 print("Message : ", message)
