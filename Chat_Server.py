@@ -153,6 +153,8 @@ class Client_Thread(Thread):
             elif "KILL_SERVICE" in msg_from_client:
                 pass
             elif "LEAVE_CHATROOM" in msg_from_client:
+                msg = "LEFT_CHATROOM: " + str(self.room_ref) + "\nJOIN_ID: " + str(self.join_id)+"\n"
+                self.socket.send(msg.encode())
                 message = self.client_name + " has left this chatroom!!!"
                 leave_message_format = "CHAT: "+ str(self.room_ref) + "\nCLIENT_NAME: "+str(self.client_name) + "\nMESSAGE: "+str(message)+"\n"
                 allusers_in_room = self.get_users_in_room()
@@ -168,12 +170,9 @@ class Client_Thread(Thread):
                 lock.release()
                 for ts in Tosend_fileno:
                     self.broadcast(ts)
-
                 self.remove_user_from_room()
                 self.reduce_roomcount_user()
                 self.delete_user_fileno()
-                msg = "LEFT_CHATROOM: " + str(self.room_ref) + "\nJOIN_ID: " + str(self.join_id)+"\n"
-                self.socket.send(msg.encode())
                 break;
             else:
                 message = msg_from_client
