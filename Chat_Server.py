@@ -76,6 +76,7 @@ class Client_Thread(Thread):
         print("conv_roomref : ",conv_roomref)
         for xyz,val in user_room.items():
             print("user_room :",xyz , val)
+        print(user_room)
         return user_room[conv_roomref]
 
     def set_user_fileno(self):
