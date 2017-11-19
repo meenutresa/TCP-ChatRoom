@@ -159,8 +159,8 @@ class Client_Thread(Thread):
                 leave_room_ref = msg_split[1]
                 leave_join_id = msg_split[3]
 
-                for xyz in user_room:
-                    print("user_room :",xyz)
+                for xyz,val in user_room.items():
+                    print("user_room :",xyz , val)
 
                 msg = "LEFT_CHATROOM: " + str(leave_room_ref) + "\nJOIN_ID: " + str(leave_join_id)+"\n"
                 self.socket.send(msg.encode())
