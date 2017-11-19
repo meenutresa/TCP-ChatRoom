@@ -183,6 +183,7 @@ class Client_Thread(Thread):
                 #self.remove_user_from_room()
                 #self.reduce_roomcount_user()
                 #self.delete_user_fileno()
+                print("Break")
                 #break;
             else:
                 print("Message : ", msg_from_client)
