@@ -73,10 +73,6 @@ class Client_Thread(Thread):
 
     def get_users_in_room_chat_conv(self,conv_roomref):
         #print("get_users_in_room : ",self.room_ref)
-        print("conv_roomref : ",conv_roomref)
-        for xyz,val in user_room.items():
-            print("user_room :",xyz , val)
-        print(user_room[1])
         return user_room[conv_roomref]
 
     def set_user_fileno(self):
@@ -163,9 +159,6 @@ class Client_Thread(Thread):
                 leave_room_ref = int(msg_split[1])
                 leave_join_id = msg_split[3]
 
-                for xyz,val in user_room.items():
-                    print("user_room :",xyz , val)
-
                 msg = "LEFT_CHATROOM: " + str(leave_room_ref) + "\nJOIN_ID: " + str(leave_join_id)+"\n"
                 self.socket.send(msg.encode())
                 message = leave_client_name + " has left this chatroom!!!"
@@ -178,7 +171,7 @@ class Client_Thread(Thread):
                     #print("userid : ",user_id)
                     Tosend_fileno.append(self.get_user_fileno(user_id))
                 for i, j in zip(send_queues.values(), send_queues):
-                    if j in Tosend_fileno and j != self.socket.fileno():
+                    if j in Tosend_fileno:
                         i.put(leave_message_format)
                 lock.release()
                 for ts in Tosend_fileno:
