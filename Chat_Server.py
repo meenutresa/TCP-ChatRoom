@@ -33,6 +33,13 @@ class Client_Thread(Thread):
         value = len(chatroom_dict)+1
         chatroom_dict[self.chatroom.lower()]=value
         return value
+    def get_roomID_join(self,chat_chatroom):
+        for chatrm in chatroom_dict:
+            if chatrm == chat_chatroom:
+                return chatroom_dict[chat_chatroom]
+        value = len(chatroom_dict)+1
+        chatroom_dict[chat_chatroom.lower()]=value
+        return value
 
     def get_clientID(self):
         for id in user_dict:
@@ -51,6 +58,12 @@ class Client_Thread(Thread):
                 user_room[self.room_ref].append(self.join_id)
                 return
         user_room[self.room_ref] = [self.join_id]
+    def set_user_room_chat(self,chat_roomref):
+        for room in user_room:
+            if chat_roomref == room:
+                user_room[chat_roomref].append(self.join_id)
+                return
+        user_room[chat_roomref] = [self.join_id]
 
     def set_roomcount_user(self):
         for user in roomcount_user:
@@ -77,6 +90,8 @@ class Client_Thread(Thread):
 
     def set_user_fileno(self):
         user_fileno[(self.room_ref,self.join_id)] = self.socket.fileno()
+    def set_user_fileno_chat(self,chat_roomref):
+        user_fileno[(chat_roomref,self.join_id)] = self.socket.fileno()
 
     def get_user_fileno(self, other_join_id):
         return user_fileno[(self.room_ref,other_join_id)]
@@ -117,21 +132,21 @@ class Client_Thread(Thread):
             if "JOIN_CHATROOM" in msg_from_client:
                 print("Message : ", msg_from_client)
                 msg_split = re.findall(r"[\w']+", msg_from_client)
-                self.chatroom = msg_split[1]
+                join_chatroom = msg_split[1]
                 self.client_name = msg_split[7]
-                self.room_ref = self.get_roomID()
+                join_room_ref = self.get_roomID_join(join_chatroom)
                 self.join_id = self.get_clientID()
-                self.set_user_room()
+                self.set_user_room_chat(join_room_ref)
                 self.set_roomcount_user()
-                self.set_user_fileno()
+                self.set_user_fileno_chat(join_room_ref)
                 self.broadcast_data()
                 #print("user_fileno : ", user_fileno)
-                join_msgto_client = "JOINED_CHATROOM: " + str(self.chatroom) + "\nSERVER_IP: "+str(ip)+"\nPORT: "+str(port)+"\nROOM_REF: "+str(self.room_ref)+"\nJOIN_ID: "+str(self.join_id)+"\n"
+                join_msgto_client = "JOINED_CHATROOM: " + str(join_chatroom) + "\nSERVER_IP: "+str(ip)+"\nPORT: "+str(port)+"\nROOM_REF: "+str(join_room_ref)+"\nJOIN_ID: "+str(self.join_id)+"\n"
                 self.socket.send(join_msgto_client.encode())
-                allusers_in_room = self.get_users_in_room()
+                allusers_in_room = self.get_users_in_room_chat_conv(join_room_ref)
                 #print("\nall users in room :",allusers_in_room)
                 join_message_to_room = str(self.client_name) + " has joined this chatroom\n"
-                join_message_to_room_format = "CHAT: "+ str(self.room_ref) + "\nCLIENT_NAME: "+str(self.client_name) + "\nMESSAGE: "+str(join_message_to_room)+"\n"
+                join_message_to_room_format = "CHAT: "+ str(join_room_ref) + "\nCLIENT_NAME: "+str(self.client_name) + "\nMESSAGE: "+str(join_message_to_room)+"\n"
                 lock.acquire()
                 #print("\nsend_queues :" , send_queues)
                 #del send_queues[self.socket.fileno()]
