@@ -177,7 +177,10 @@ class Client_Thread(Thread):
         #--------------------------------------------------
         while True:
             #print("TRUE")
-            msg_from_client=self.socket.recv(buff_size).decode()
+            try:
+                msg_from_client=self.socket.recv(buff_size).decode()
+            except:
+                pass
             #if flag!=1:
             #    print("Client_Threads",client_threads)
             #    print("Client_Threads",self.client_nam)
