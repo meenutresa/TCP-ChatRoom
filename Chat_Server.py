@@ -273,7 +273,7 @@ class Client_Thread(Thread):
                 #print("conv_message_1",conv_message_1)
                 msg_split = re.findall(r"[\w']+", msg_from_client)
                 disconnect_client_name = msg_split[5]
-                if disconnect_client_name == 'client'
+                #if disconnect_client_name == 'client'
                 print("self.client name",self.client_name)
                 print("disconnect_client_name",disconnect_client_name)
 
