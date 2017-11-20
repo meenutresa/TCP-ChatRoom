@@ -91,10 +91,18 @@ class Client_Thread(Thread):
         if roomcount_user[self.join_id] == 0:
             del roomcount_user[self.join_id]
 
+    def reduce_roomcount_user_disco(self,disc_joinid):
+        roomcount_user[disc_joinid] = roomcount_user[disc_joinid]-1
+        if roomcount_user[disc_joinid] == 0:
+            del roomcount_user[disc_joinid]
+
     def remove_user_from_room(self):
         user_room[self.room_ref].remove(self.join_id)
     def remove_user_from_room_leave(self,leave_roomref):
         user_room[leave_roomref].remove(self.join_id)
+
+    def remove_user_from_room_leave_disco(self,disc_roomref,disc_joinid):
+        user_room[disc_roomref].remove(disc_joinid)
 
     def get_users_in_room(self):
         #print("get_users_in_room : ",self.room_ref)
@@ -118,6 +126,9 @@ class Client_Thread(Thread):
         del user_fileno[(self.room_ref,self.join_id)]
     def delete_user_fileno_leave(self,leave_roomref):
         del user_fileno[(leave_roomref,self.join_id)]
+
+    def delete_user_fileno_leave_disco(self,disc_roomref,disc_joinid):
+        del user_fileno[(disc_roomref,disc_joinid)]
 
     def broadcast(self,file_no):
         try:
@@ -204,6 +215,7 @@ class Client_Thread(Thread):
                     print("rooms_refs : ",dr)
                     disconnect_message_format = "CHAT: "+str(dr)+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
                     allusers_in_room = self.get_users_in_room_chat_conv(dr)
+                    self.socket.send(disconnect_message_format.encode())
                     lock.acquire()
                     #del send_queues[self.socket.fileno()]
                     Tosend_fileno = []
@@ -216,9 +228,9 @@ class Client_Thread(Thread):
                     lock.release()
                     for ts in Tosend_fileno:
                         self.broadcast(ts)
-                    #self.remove_user_from_room_leave(dr)
-                    #self.reduce_roomcount_user()
-                    #self.delete_user_fileno_leave(dr)
+                    self.remove_user_from_room_leave_disco(dr,diconnect_joinid)
+                    self.reduce_roomcount_user_disco(diconnect_joinid)
+                    self.delete_user_fileno_leave_disco(dr,diconnect_joinid)
                     #print(user_room)
                     #print("Break")
                 #self.socket.send(disconnect_message_format.encode())
