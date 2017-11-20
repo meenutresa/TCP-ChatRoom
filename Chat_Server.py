@@ -197,7 +197,7 @@ class Client_Thread(Thread):
                 msg_split = re.findall(r"[\w']+", msg_from_client)
                 disconnect_client_name = msg_split[5]
                 diconnect_joinid = self.get_clientID_disco(disconnect_client_name)
-                roomlist_of_disc_client = get_room_user_disco(disconnect_client_name)
+                roomlist_of_disc_client = self.get_room_user_disco(disconnect_client_name)
                 message = leave_client_name + " has disconnected!!!"
                 for dr in roomlist_of_disc_client:
                     disconnect_message_format = "CHAT: "+ str(dr) + "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
