@@ -321,7 +321,7 @@ class Client_Thread(Thread):
                     #print("roomlist_of_disc_client_after delete",roomlist_of_disc_client)
                     self.remove_user_from_room_leave(dr)
                     self.delete_user_fileno_leave(dr)
-                    #self.remove_room_user_dico(leave_room_ref)
+                    self.remove_room_user_dico(dr)
                     self.reduce_roomcount_user()
                     #print(user_room)
                     #print("Break")
