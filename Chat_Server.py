@@ -215,7 +215,7 @@ class Client_Thread(Thread):
                 host_name = socket.gethostname()
                 host_ip = socket.gethostbyname(host_name)
                 host_port = port
-                message = msg_from_client+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n"
+                message = msg_from_client+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n"
                 self.socket.send(message.encode())
 
             elif "KILL_SERVICE" in msg_from_client:
@@ -232,7 +232,7 @@ class Client_Thread(Thread):
                 disconnect_client_name = msg_split[5]
                 diconnect_joinid = self.get_clientID_disco(disconnect_client_name)
                 roomlist_of_disc_client = self.get_room_user_disco(disconnect_client_name)
-                message = disconnect_client_name + " has disconnected!!!\n"
+                message = disconnect_client_name + " has disconnected!!!"
                 #print("roomlist_of_disc_client",roomlist_of_disc_client)
                 #self.socket.send(msg.encode())
                 for dr in roomlist_of_disc_client:
@@ -273,7 +273,7 @@ class Client_Thread(Thread):
 
                 msg = "LEFT_CHATROOM: " + str(leave_room_ref) + "\nJOIN_ID: " + str(leave_join_id)+"\n"
                 self.socket.send(msg.encode())
-                message = leave_client_name + " has left this chatroom!!!\n"
+                message = leave_client_name + " has left this chatroom!!!"
                 leave_message_format = "CHAT: "+ str(leave_room_ref) + "\nCLIENT_NAME: "+str(leave_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
                 allusers_in_room = self.get_users_in_room_chat_conv(leave_room_ref)
                 lock.acquire()
