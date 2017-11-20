@@ -110,7 +110,9 @@ class Client_Thread(Thread):
         print("disc_roomref",disc_roomref)
         print("disc_joinid",disc_joinid)
         print("user_room",user_room)
-        user_room[disc_roomref].remove(disc_joinid)
+        for jid in user_room[disc_roomref]:
+            if jid == disc_joinid:
+                user_room[disc_roomref].remove(disc_joinid)
 
     def get_users_in_room(self):
         #print("get_users_in_room : ",self.room_ref)
