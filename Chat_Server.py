@@ -179,7 +179,8 @@ class Client_Thread(Thread):
             #print("TRUE")
             msg_from_client=self.socket.recv(buff_size).decode()
             if flag!=1:
-                print("10.62.0.44",self.client_nam)
+                print("Client_Threads",client_threads)
+                print("Client_Threads",self.client_nam)
                 sys.exit()
             #print("Message from Client : " +self.client_name+ ":" + msg_from_client)
             #print("Message from Client : " +username+ ":" + msg_from_client)
@@ -429,7 +430,8 @@ while True:
     client_broadcast_thread.start()
     client_threads.append(client_broadcast_thread)
     """
-
+"""
 for ct in client_threads:
     ct.join()
-    print("Reached the END")
+    print("Reached the END
+"""
