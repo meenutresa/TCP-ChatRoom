@@ -189,7 +189,7 @@ class Client_Thread(Thread):
                 self.set_user_fileno_chat(join_room_ref)
                 self.broadcast_data()
                 #print("user_fileno : ", user_fileno)
-                join_msgto_client = "JOINED_CHATROOM: " + str(join_chatroom) + "\nSERVER_IP: "+str(ip)+"\nPORT: "+str(port)+"\nROOM_REF: "+str(join_room_ref)+"\nJOIN_ID: "+str(self.join_id)+"\n"
+                join_msgto_client = "JOINED_CHATROOM: " + str(join_chatroom) + "\nSERVER_IP: "+str(ip)+"\nPORT: "+str(port)+"\nROOM_REF: "+str(join_room_ref)+"\nJOIN_ID: "+str(self.join_id)+"\n\n"
                 self.socket.send(join_msgto_client.encode())
                 allusers_in_room = self.get_users_in_room_chat_conv(join_room_ref)
                 #print("\nall users in room :",allusers_in_room)
@@ -215,7 +215,7 @@ class Client_Thread(Thread):
                 host_name = socket.gethostname()
                 host_ip = socket.gethostbyname(host_name)
                 host_port = port
-                message = msg_from_client+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n\n"
+                message = msg_from_client+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n"
                 self.socket.send(message.encode())
 
             elif "KILL_SERVICE" in msg_from_client:
