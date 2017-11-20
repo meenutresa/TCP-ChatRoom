@@ -217,7 +217,8 @@ class Client_Thread(Thread):
                 conv_client_name = msg_split[5]
                 conv_room_ref = int(msg_split[1])
                 conv_join_id = msg_split[3]
-                msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(message) + "\n"
+                conv_message = msg_split[7]
+                msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(conv_message) + "\n"
                 #print("Room_Ref : ", self.room_ref)
                 #for rr in user_room:
                 #    print(rr)
