@@ -79,6 +79,9 @@ class Client_Thread(Thread):
     def set_room_user(self,join_roomref):
         for user in room_user:
             if user == self.client_name:
+                for room in room_user[self.client_name]:
+                    if room == join_roomref:
+                        return
                 room_user[self.client_name].append(join_roomref)
                 return
         room_user[self.client_name] = [join_roomref]
