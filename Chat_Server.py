@@ -407,7 +407,7 @@ tcp_socket.bind(('',port))
 
 client_threads = []
 while True:
-    tcp_socket.listen(6)
+    #tcp_socket.listen(6)
 
     print("Server active. Waiting for Clients to join...")
 
