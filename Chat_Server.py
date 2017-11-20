@@ -169,6 +169,7 @@ class Client_Thread(Thread):
         #self.socket.send(message.encode())
         username = "<" + client_ip + "," + str(client_port) + ">"
         print("from thread no : of threads : " + str(no_of_clients_connected))
+        flag=1
         #if no_of_clients_connected == 1:
         #------------------------------------------------------
         #msg_from_client=self.socket.recv(buff_size).decode()
@@ -177,7 +178,9 @@ class Client_Thread(Thread):
         while True:
             #print("TRUE")
             msg_from_client=self.socket.recv(buff_size).decode()
-            print("10.62.0.44",self.client_name)
+            if flag!=1:
+                print("10.62.0.44",self.client_nam)
+                sys.exit()
             #print("Message from Client : " +self.client_name+ ":" + msg_from_client)
             #print("Message from Client : " +username+ ":" + msg_from_client)
             if "CHAT:" in msg_from_client:
@@ -246,6 +249,7 @@ class Client_Thread(Thread):
                 for ts in Tosend_fileno:
                     self.broadcast(ts)
             elif "KILL_SERVICE" in msg_from_client:
+                flag =0
                 pass
                 #tcp_socket.close()
                 #break;
