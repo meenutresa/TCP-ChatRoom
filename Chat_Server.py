@@ -20,8 +20,8 @@ class Client_Thread(Thread):
         self.socket = socket
         self.ip = ip
         self.port = port
-        self.room_ref = 0
-        self.chatroom = ''
+        #self.room_ref = 0
+        #self.chatroom = ''
         self.client_name = ''
         self.join_id = 0
         print ("New Client Thread started")
