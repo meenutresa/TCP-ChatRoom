@@ -224,11 +224,13 @@ class Client_Thread(Thread):
                 host_name = socket.gethostname()
                 host_ip = socket.gethostbyname(host_name)
                 host_port = port
-                message = msg_from_client+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
+                message = conv_message_1+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
                 self.socket.send(message.encode())
 
             elif "DISCONNECT" in msg_from_client:
                 print("Message : ", msg_from_client)
+                conv_message_1 = msg_from_client.split(':')
+                print("conv_message_1",conv_message_1)
                 msg_split = re.findall(r"[\w']+", msg_from_client)
                 disconnect_client_name = msg_split[5]
                 diconnect_joinid = self.get_clientID_disco(disconnect_client_name)
