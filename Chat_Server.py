@@ -264,7 +264,7 @@ class Client_Thread(Thread):
                 #self.socket.send(disconnect_message_format.encode())
                 room_user.pop(self.client_name, None)
                 if flag!=1:
-                    msg = "ERROR_CODE: "+str(1)+"\nERROR_DESCRIPTION: error occured\n"
+                    msg = "ERROR_CODE: "+str(1)+"\nERROR_DESCRIPTION: error occured"
                     self.socket.send(msg.encode())
 
                 print("room_user",room_user)
