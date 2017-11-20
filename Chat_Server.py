@@ -245,21 +245,9 @@ class Client_Thread(Thread):
                 for ts in Tosend_fileno:
                     self.broadcast(ts)
             elif "KILL_SERVICE" in msg_from_client:
-                print("Message : ", msg_from_client)
-                print("chatroom_dict",chatroom_dict)
-                print("user_dict",user_dict)
-                print("user_room",user_room)
-                print("roomcount_user",roomcount_user)
-                print("room_user",room_user)
-                print("user_fileno",user_fileno)
-                print("send_queue_fileno_client",send_queue_fileno_client)
-
-                #tcp_socket.shutdown()
-                #message = "HELO "+str(message)+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
-                #self.socket.send(message.encode())
-                #tcp_socket.shutdown()
-                tcp_socket.close()
-                break;
+                pass
+                #tcp_socket.close()
+                #break;
 
             elif "HELO" in msg_from_client:
                 print("Message : ", msg_from_client)
