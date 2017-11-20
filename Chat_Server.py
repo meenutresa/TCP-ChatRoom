@@ -295,7 +295,7 @@ class Client_Thread(Thread):
                     #print("userid : ",user_id)
                     Tosend_fileno.append(self.get_user_fileno_gen(conv_room_ref,user_id))
                 for i, j in zip(send_queues.values(), send_queues):
-                    if j in Tosend_fileno and j != self.socket.fileno():
+                    if j in Tosend_fileno:
                         i.put(msg)
                 lock.release()
                 for ts in Tosend_fileno:
