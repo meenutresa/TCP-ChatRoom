@@ -79,6 +79,8 @@ class Client_Thread(Thread):
 
     def remove_user_from_room(self):
         user_room[self.room_ref].remove(self.join_id)
+    def remove_user_from_room_leave(self,leave_roomref):
+        user_room[leave_roomref].remove(self.join_id)
 
     def get_users_in_room(self):
         #print("get_users_in_room : ",self.room_ref)
@@ -98,6 +100,8 @@ class Client_Thread(Thread):
 
     def delete_user_fileno(self):
         del user_fileno[(self.room_ref,self.join_id)]
+    def delete_user_fileno_leave(self,leave_roomref):
+        del user_fileno[(leave_roomref,self.join_id)]
 
     def broadcast(self,file_no):
         try:
@@ -195,9 +199,10 @@ class Client_Thread(Thread):
                 lock.release()
                 for ts in Tosend_fileno:
                     self.broadcast(ts)
-                #self.remove_user_from_room()
-                #self.reduce_roomcount_user()
-                #self.delete_user_fileno()
+                self.remove_user_from_room_leave(leave_room_ref)
+                self.reduce_roomcount_user()
+                self.delete_user_fileno_leave(leave_room_ref)
+                print(user_room)
                 print("Break")
                 #break;
             else:
