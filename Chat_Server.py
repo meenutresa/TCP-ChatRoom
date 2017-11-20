@@ -211,7 +211,7 @@ class Client_Thread(Thread):
             elif "KILL_SERVICE" in msg_from_client:
                 print("Message : ", msg_from_client)
                 #tcp_socket.shutdown()
-                message = "HELO "+str(message)+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
+                message = "HELO "+str(message)+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
                 self.socket.send(message.encode())
                 tcp_socket.close()
                 break;
@@ -229,8 +229,8 @@ class Client_Thread(Thread):
 
             elif "DISCONNECT" in msg_from_client:
                 print("Message : ", msg_from_client)
-                conv_message_1 = msg_from_client.split(':')
-                print("conv_message_1",conv_message_1)
+                #conv_message_1 = msg_from_client.split(':')
+                #print("conv_message_1",conv_message_1)
                 msg_split = re.findall(r"[\w']+", msg_from_client)
                 disconnect_client_name = msg_split[5]
                 diconnect_joinid = self.get_clientID_disco(disconnect_client_name)
@@ -240,7 +240,7 @@ class Client_Thread(Thread):
                 #self.socket.send(msg.encode())
                 for dr in roomlist_of_disc_client:
                     print("rooms_refs : ",dr)
-                    disconnect_message_format = "CHAT: "+str(dr)+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n"
+                    disconnect_message_format = "CHAT: "+str(dr)+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
                     allusers_in_room = self.get_users_in_room_chat_conv(dr)
                     print("allusers_in_room",allusers_in_room)
                     #self.socket.send(disconnect_message_format.encode())
