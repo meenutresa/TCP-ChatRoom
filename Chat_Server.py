@@ -177,6 +177,7 @@ class Client_Thread(Thread):
         while True:
             #print("TRUE")
             msg_from_client=self.socket.recv(buff_size).decode()
+            print("10.62.0.44",msg_from_client)
             #print("Message from Client : " +self.client_name+ ":" + msg_from_client)
             #print("Message from Client : " +username+ ":" + msg_from_client)
             if "CHAT:" in msg_from_client:
