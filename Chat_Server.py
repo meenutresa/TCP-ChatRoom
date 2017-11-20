@@ -199,7 +199,9 @@ class Client_Thread(Thread):
                 diconnect_joinid = self.get_clientID_disco(disconnect_client_name)
                 roomlist_of_disc_client = self.get_room_user_disco(disconnect_client_name)
                 message = leave_client_name + " has disconnected!!!"
+                #self.socket.send(msg.encode())
                 for dr in roomlist_of_disc_client:
+                    print("rooms_refs : ",df)
                     disconnect_message_format = "CHAT: "+ str(dr) + "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
                     allusers_in_room = self.get_users_in_room_chat_conv(dr)
                     lock.acquire()
