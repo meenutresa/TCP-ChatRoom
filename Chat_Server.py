@@ -172,7 +172,7 @@ class Client_Thread(Thread):
         #print("Message from Client : " +username+ ":" + msg_from_client)
         #--------------------------------------------------
         while True:
-            print("TRUE")
+            #print("TRUE")
             msg_from_client=self.socket.recv(buff_size).decode()
             #print("Message from Client : " +self.client_name+ ":" + msg_from_client)
             #print("Message from Client : " +username+ ":" + msg_from_client)
