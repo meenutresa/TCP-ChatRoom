@@ -220,7 +220,7 @@ class Client_Thread(Thread):
                     self.socket.send(message.encode())
                 elif "KILL_SERVICE" in msg_from_client:
                     print("Message : ", msg_from_client)
-                    socket.close()
+                    tcp_socket.close()
                     break;
 
                 elif "DISCONNECT" in msg_from_client:
