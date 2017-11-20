@@ -148,12 +148,12 @@ class Client_Thread(Thread):
                 self.set_user_fileno_chat(join_room_ref)
                 self.broadcast_data()
                 #print("user_fileno : ", user_fileno)
-                join_msgto_client = "JOINED_CHATROOM: " + str(join_chatroom) + "\nSERVER_IP: "+str(ip)+"\nPORT: "+str(port)+"\nROOM_REF: "+str(join_room_ref)+"\nJOIN_ID: "+str(self.join_id)+"\n"
+                join_msgto_client = "JOINED_CHATROOM: " + str(join_chatroom) + "\nSERVER_IP: "+str(ip)+"\nPORT: "+str(port)+"\nROOM_REF: "+str(join_room_ref)+"\nJOIN_ID: "+str(self.join_id)+"\n\n"
                 self.socket.send(join_msgto_client.encode())
                 allusers_in_room = self.get_users_in_room_chat_conv(join_room_ref)
                 #print("\nall users in room :",allusers_in_room)
                 join_message_to_room = str(self.client_name) + " has joined this chatroom\n"
-                join_message_to_room_format = "CHAT: "+ str(join_room_ref) + "\nCLIENT_NAME: "+str(self.client_name) + "\nMESSAGE: "+str(join_message_to_room)+"\n"
+                join_message_to_room_format = "CHAT: "+ str(join_room_ref) + "\nCLIENT_NAME: "+str(self.client_name) + "\nMESSAGE: "+str(join_message_to_room)+"\n\n"
                 lock.acquire()
                 #print("\nsend_queues :" , send_queues)
                 #del send_queues[self.socket.fileno()]
@@ -172,7 +172,7 @@ class Client_Thread(Thread):
                 host_name = socket.gethostname()
                 host_ip = socket.gethostbyname(host_name)
                 host_port = port
-                message = str(msg_from_client)+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
+                message = str(msg_from_client)+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n"
                 self.socket.send(message.encode())
             elif "KILL_SERVICE" in msg_from_client:
                 print("Message : ", msg_from_client)
@@ -185,10 +185,10 @@ class Client_Thread(Thread):
                 leave_room_ref = int(msg_split[1])
                 leave_join_id = msg_split[3]
 
-                msg = "LEFT_CHATROOM: " + str(leave_room_ref) + "\nJOIN_ID: " + str(leave_join_id)+"\n"
+                msg = "LEFT_CHATROOM: " + str(leave_room_ref) + "\nJOIN_ID: " + str(leave_join_id)+"\n\n"
                 self.socket.send(msg.encode())
                 message = leave_client_name + " has left this chatroom!!!"
-                leave_message_format = "CHAT: "+ str(leave_room_ref) + "\nCLIENT_NAME: "+str(leave_client_name) + "\nMESSAGE: "+str(message)+"\n"
+                leave_message_format = "CHAT: "+ str(leave_room_ref) + "\nCLIENT_NAME: "+str(leave_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
                 allusers_in_room = self.get_users_in_room_chat_conv(leave_room_ref)
                 lock.acquire()
                 #del send_queues[self.socket.fileno()]
@@ -217,7 +217,7 @@ class Client_Thread(Thread):
                 conv_client_name = msg_split[5]
                 conv_room_ref = msg_split[1]
                 conv_join_id = msg_split[3]
-                msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(message) + "\n"
+                msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(message) + "\n\n"
                 #print("Room_Ref : ", self.room_ref)
                 #for rr in user_room:
                 #    print(rr)
