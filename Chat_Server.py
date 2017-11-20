@@ -100,9 +100,12 @@ class Client_Thread(Thread):
     def reduce_roomcount_user_disco(self,disc_joinid):
         #print("disc_joinid",disc_joinid)
         #print("roomcount_user",roomcount_user)
-        roomcount_user[disc_joinid] = roomcount_user[disc_joinid]-1
-        if roomcount_user[disc_joinid] == 0:
-            del roomcount_user[disc_joinid]
+        try:
+            roomcount_user[disc_joinid] = roomcount_user[disc_joinid]-1
+            if roomcount_user[disc_joinid] == 0:
+                del roomcount_user[disc_joinid]
+        except:
+            pass
 
     def remove_user_from_room(self):
         user_room[self.room_ref].remove(self.join_id)
