@@ -332,7 +332,10 @@ class Client_Thread(Thread):
                 print("Break")
                 #break;
             else:
-                print("Message :",msg_from_client)
+                if(len(msg_from_client)>0):
+                    msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(msg_from_client)
+                    print("msg chat : ",msg)
+
 
         print("Out of while loop")
         sys.exit()
