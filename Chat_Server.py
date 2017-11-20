@@ -324,7 +324,7 @@ class Client_Thread(Thread):
                     #self.socket.send(msg.encode())
                     #print("from thread no : of threads : " + str(no_of_clients_connected))
             print("Out of while loop")
-        except (RuntimeError, TypeError, NameError) as e:
+        except:
             pass
         #sys.exit()
 
