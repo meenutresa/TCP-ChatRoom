@@ -250,13 +250,17 @@ class Client_Thread(Thread):
                     for ts in Tosend_fileno:
                         self.broadcast(ts)
                     self.remove_user_from_room_leave_disco(dr,diconnect_joinid)
-                    print("roomlist_of_disc_client before delete",roomlist_of_disc_client)
-                    self.remove_room_user_dico(dr)
-                    print("roomlist_of_disc_client_after delete",roomlist_of_disc_client)
+                    #print("roomlist_of_disc_client before delete",roomlist_of_disc_client)
+                    #self.remove_room_user_dico(dr)
+                    #print("roomlist_of_disc_client_after delete",roomlist_of_disc_client)
                     self.reduce_roomcount_user_disco(diconnect_joinid)
                     self.delete_user_fileno_leave_disco(dr,diconnect_joinid)
                     #print(user_room)
                     #print("Break")
+                for dr in roomlist_of_disc_client:
+                    print("roomlist_of_disc_client before delete",roomlist_of_disc_client)
+                    self.remove_room_user_dico(dr)
+                    print("roomlist_of_disc_client_after delete",roomlist_of_disc_client)
                 #self.socket.send(disconnect_message_format.encode())
 
             elif "LEAVE_CHATROOM" in msg_from_client:
