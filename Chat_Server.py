@@ -194,7 +194,7 @@ class Client_Thread(Thread):
                 allusers_in_room = self.get_users_in_room_chat_conv(join_room_ref)
                 #print("\nall users in room :",allusers_in_room)
                 join_message_to_room = str(self.client_name) + " has joined this chatroom\n"
-                join_message_to_room_format = "CHAT: "+ str(join_room_ref) + "\nCLIENT_NAME: "+str(self.client_name) + "\nMESSAGE: "+str(join_message_to_room)+"\n\n"
+                join_message_to_room_format = "CHAT: "+ str(join_room_ref) + "\nCLIENT_NAME: "+str(self.client_name) + "\nMESSAGE: "+str(join_message_to_room)+"\n"
                 lock.acquire()
                 #print("\nsend_queues :" , send_queues)
                 #del send_queues[self.socket.fileno()]
@@ -215,7 +215,7 @@ class Client_Thread(Thread):
                 host_name = socket.gethostname()
                 host_ip = socket.gethostbyname(host_name)
                 host_port = port
-                message = "HELO "+str(message)+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n"
+                message = "HELO "+str(message)+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
                 self.socket.send(message.encode())
             elif "KILL_SERVICE" in msg_from_client:
                 print("Message : ", msg_from_client)
