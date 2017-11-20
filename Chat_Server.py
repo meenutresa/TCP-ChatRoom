@@ -177,6 +177,9 @@ class Client_Thread(Thread):
             elif "KILL_SERVICE" in msg_from_client:
                 print("Message : ", msg_from_client)
                 pass
+            elif "DISCONNECT" in msg_from_client:
+                pass
+
             elif "LEAVE_CHATROOM" in msg_from_client:
                 print("Message : ", msg_from_client)
                 msg_split = re.findall(r"[\w']+", msg_from_client)
