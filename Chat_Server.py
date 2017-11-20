@@ -301,25 +301,31 @@ class Client_Thread(Thread):
                 self.socket.send(msg.encode())
                 message = leave_client_name + " has left this chatroom"
                 leave_message_format = "CHAT: "+ str(leave_room_ref) + "\nCLIENT_NAME: "+str(leave_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
-                allusers_in_room = self.get_users_in_room_chat_conv(leave_room_ref)
-                lock.acquire()
-                #del send_queues[self.socket.fileno()]
-                Tosend_fileno = []
-                for user_id in allusers_in_room:
-                    #print("userid : ",user_id)
-                    Tosend_fileno.append(self.get_user_fileno_gen(leave_room_ref,user_id))
-                for i, j in zip(send_queues.values(), send_queues):
-                    if j in Tosend_fileno:
-                        i.put(leave_message_format)
-                lock.release()
-                for ts in Tosend_fileno:
-                    self.broadcast(ts)
-                self.remove_user_from_room_leave(leave_room_ref)
-                self.remove_room_user_dico(leave_room_ref)
-                self.reduce_roomcount_user()
-                self.delete_user_fileno_leave(leave_room_ref)
-                print(user_room)
-                print("Break")
+                if len(send_queues.values())>1:
+                    allusers_in_room = self.get_users_in_room_chat_conv(leave_room_ref)
+                    lock.acquire()
+                    #del send_queues[self.socket.fileno()]
+                    Tosend_fileno = []
+                    for user_id in allusers_in_room:
+                        #print("userid : ",user_id)
+                        Tosend_fileno.append(self.get_user_fileno_gen(leave_room_ref,user_id))
+                    for i, j in zip(send_queues.values(), send_queues):
+                        if j in Tosend_fileno:
+                            i.put(leave_message_format)
+                    lock.release()
+                    for ts in Tosend_fileno:
+                        self.broadcast(ts)
+                    self.remove_user_from_room_leave(leave_room_ref)
+                    self.remove_room_user_dico(leave_room_ref)
+                    self.reduce_roomcount_user()
+                    self.delete_user_fileno_leave(leave_room_ref)
+                    print(user_room)
+                    print("Break")
+                else:
+                    self.remove_user_from_room_leave(leave_room_ref)
+                    self.remove_room_user_dico(leave_room_ref)
+                    self.reduce_roomcount_user()
+                    self.delete_user_fileno_leave(leave_room_ref)
 
             else:
                 if len(msg_from_client)>0:
