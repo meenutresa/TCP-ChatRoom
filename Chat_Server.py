@@ -90,7 +90,9 @@ class Client_Thread(Thread):
         room_user[self.client_name].remove(disc_roomref)
 
     def get_room_user_disco(self):
+        print("room_user",room_user)
         return room_user[self.client_name]
+
 
     def reduce_roomcount_user(self):
         roomcount_user[self.join_id] = roomcount_user[self.join_id]-1
