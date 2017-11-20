@@ -332,7 +332,7 @@ class Client_Thread(Thread):
                 print("Break")
                 #break;
             else:
-                pass
+                print("Message :",msg_from_client)
 
         print("Out of while loop")
         sys.exit()
