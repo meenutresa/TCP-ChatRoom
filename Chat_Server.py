@@ -11,6 +11,7 @@ chatroom_dict = {}
 user_dict = {}
 user_room = {}
 roomcount_user = {}
+room_user = {}
 user_fileno = {}
 send_queue_fileno_client = {}
 
@@ -47,6 +48,9 @@ class Client_Thread(Thread):
                 return user_dict[self.client_name]
         return self.set_clientID()
 
+    def get_clientID_disco(self,disc_clientname):
+        return user_dict[disc_clientname]
+
     def set_clientID(self):
         value = len(user_dict)+1
         user_dict[self.client_name]=value
@@ -71,6 +75,16 @@ class Client_Thread(Thread):
                 roomcount_user[self.join_id] = roomcount_user[self.join_id]+1
                 return
         roomcount_user[self.join_id] = 1
+
+    def set_room_user(self,join_roomref):
+        for user in room_user:
+            if user == self.join_id:
+                room_user[self.join_id].append(join_roomref)
+                return
+        room_user[self.join_id] = join_roomref
+
+    def get_room_user_disco(self,disc_joinid):
+        return room_user[disc_joinid]
 
     def reduce_roomcount_user(self):
         roomcount_user[self.join_id] = roomcount_user[self.join_id]-1
@@ -145,6 +159,7 @@ class Client_Thread(Thread):
                 self.join_id = self.get_clientID()
                 self.set_user_room_chat(join_room_ref)
                 self.set_roomcount_user()
+                self.set_room_user(join_room_ref)
                 self.set_user_fileno_chat(join_room_ref)
                 self.broadcast_data()
                 #print("user_fileno : ", user_fileno)
@@ -181,9 +196,30 @@ class Client_Thread(Thread):
                 print("Message : ", msg_from_client)
                 msg_split = re.findall(r"[\w']+", msg_from_client)
                 disconnect_client_name = msg_split[5]
+                diconnect_joinid = self.get_clientID_disco(disconnect_client_name)
+                roomlist_of_disc_client = get_room_user_disco(diconnect_joinid)
                 message = leave_client_name + " has disconnected!!!"
-                disconnect_message_format = "CHAT: "+ str(leave_room_ref) + "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
-                self.socket.send(disconnect_message_format.encode())
+                for dr in roomlist_of_disc_client:
+                    disconnect_message_format = "CHAT: "+ str(dr) + "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
+                    allusers_in_room = self.get_users_in_room_chat_conv(dr)
+                    lock.acquire()
+                    #del send_queues[self.socket.fileno()]
+                    Tosend_fileno = []
+                    for user_id in allusers_in_room:
+                        #print("userid : ",user_id)
+                        Tosend_fileno.append(self.get_user_fileno_gen(dr,user_id))
+                    for i, j in zip(send_queues.values(), send_queues):
+                        if j in Tosend_fileno:
+                            i.put(disconnect_message_format)
+                    lock.release()
+                    for ts in Tosend_fileno:
+                        self.broadcast(ts)
+                    self.remove_user_from_room_leave(dr)
+                    self.reduce_roomcount_user()
+                    self.delete_user_fileno_leave(dr)
+                    #print(user_room)
+                    #print("Break")
+                #self.socket.send(disconnect_message_format.encode())
 
             elif "LEAVE_CHATROOM" in msg_from_client:
                 print("Message : ", msg_from_client)
