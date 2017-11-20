@@ -97,6 +97,8 @@ class Client_Thread(Thread):
 
     def get_user_fileno(self, other_join_id):
         return user_fileno[(self.room_ref,other_join_id)]
+    def get_user_fileno_gen(self, gen_roomref, other_join_id):
+        return user_fileno[(gen_roomref,other_join_id)]
 
     def delete_user_fileno(self):
         del user_fileno[(self.room_ref,self.join_id)]
@@ -156,7 +158,7 @@ class Client_Thread(Thread):
                 #del send_queues[self.socket.fileno()]
                 Tosend_fileno = []
                 for user_id in allusers_in_room:
-                    Tosend_fileno.append(self.get_user_fileno(user_id))
+                    Tosend_fileno.append(self.get_user_fileno_gen(join_room_ref,user_id))
                 for i, j in zip(send_queues.values(), send_queues):
                     if j in Tosend_fileno:
                         i.put(join_message_to_room_format)
@@ -192,7 +194,7 @@ class Client_Thread(Thread):
                 Tosend_fileno = []
                 for user_id in allusers_in_room:
                     #print("userid : ",user_id)
-                    Tosend_fileno.append(self.get_user_fileno(user_id))
+                    Tosend_fileno.append(self.get_user_fileno_gen(leave_room_ref,user_id))
                 for i, j in zip(send_queues.values(), send_queues):
                     if j in Tosend_fileno:
                         i.put(leave_message_format)
@@ -224,7 +226,7 @@ class Client_Thread(Thread):
                 Tosend_fileno = []
                 for user_id in allusers_in_room:
                     #print("userid : ",user_id)
-                    Tosend_fileno.append(self.get_user_fileno(user_id))
+                    Tosend_fileno.append(self.get_user_fileno_gen(conv_room_ref,user_id))
                 for i, j in zip(send_queues.values(), send_queues):
                     if j in Tosend_fileno and j != self.socket.fileno():
                         i.put(msg)
