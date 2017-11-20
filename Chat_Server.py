@@ -78,7 +78,7 @@ class Client_Thread(Thread):
 
     def set_room_user(self,join_roomref):
         for user in room_user:
-            if user == self.join_id:
+            if user == self.client_name:
                 room_user[self.client_name].append(join_roomref)
                 return
         room_user[self.client_name] = [join_roomref]
@@ -202,14 +202,14 @@ class Client_Thread(Thread):
                 #self.socket.send(msg.encode())
                 for dr in roomlist_of_disc_client:
                     print("rooms_refs : ",dr)
-                    disconnect_message_format = "CHAT: 1"+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
-                    allusers_in_room = self.get_users_in_room_chat_conv(1)
+                    disconnect_message_format = "CHAT: "+str(dr)+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
+                    allusers_in_room = self.get_users_in_room_chat_conv(dr)
                     lock.acquire()
                     #del send_queues[self.socket.fileno()]
                     Tosend_fileno = []
                     for user_id in allusers_in_room:
                         #print("userid : ",user_id)
-                        Tosend_fileno.append(self.get_user_fileno_gen(1,user_id))
+                        Tosend_fileno.append(self.get_user_fileno_gen(dr,user_id))
                     for i, j in zip(send_queues.values(), send_queues):
                         if j in Tosend_fileno:
                             i.put(disconnect_message_format)
