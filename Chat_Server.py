@@ -217,6 +217,8 @@ class Client_Thread(Thread):
                 break;
             elif "HELO" in msg_from_client:
                 print("Message : ", msg_from_client)
+                conv_message_1 = msg_from_client.split(':')
+                print("conv_message_1",conv_message_1)
                 msg_split = re.findall(r"[\w']+", msg_from_client)
                 message = msg_split[1]
                 host_name = socket.gethostname()
@@ -306,9 +308,7 @@ class Client_Thread(Thread):
                 conv_message = msg_split[7]
                 for msgsp in msg_split[8:]:
                     conv_message = conv_message +" "+ msgsp
-                conv_message_1 = message.split(':')
-                print("conv_message_1",conv_message_1)
-                msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(conv_message)+"\n"
+                msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(conv_message)+"\n\n"
                 print("msg chat : ",msg)
                 #print("Room_Ref : ", self.room_ref)
                 #for rr in user_room:
