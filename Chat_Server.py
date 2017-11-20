@@ -215,7 +215,7 @@ class Client_Thread(Thread):
                 host_name = socket.gethostname()
                 host_ip = socket.gethostbyname(host_name)
                 host_port = port
-                message = msg_from_client+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n"
+                message = "HELO "+str(message)+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n\n\n\n"
                 self.socket.send(message.encode())
 
             elif "KILL_SERVICE" in msg_from_client:
