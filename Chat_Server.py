@@ -216,9 +216,9 @@ class Client_Thread(Thread):
                     lock.release()
                     for ts in Tosend_fileno:
                         self.broadcast(ts)
-                    self.remove_user_from_room_leave(dr)
-                    self.reduce_roomcount_user()
-                    self.delete_user_fileno_leave(dr)
+                    #self.remove_user_from_room_leave(dr)
+                    #self.reduce_roomcount_user()
+                    #self.delete_user_fileno_leave(dr)
                     #print(user_room)
                     #print("Break")
                 #self.socket.send(disconnect_message_format.encode())
