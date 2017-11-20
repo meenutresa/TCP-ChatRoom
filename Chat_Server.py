@@ -257,10 +257,6 @@ class Client_Thread(Thread):
                     self.delete_user_fileno_leave_disco(dr,diconnect_joinid)
                     #print(user_room)
                     #print("Break")
-                for dr in roomlist_of_disc_client:
-                    print("roomlist_of_disc_client before delete",roomlist_of_disc_client)
-                    self.remove_room_user_dico(dr)
-                    print("roomlist_of_disc_client_after delete",roomlist_of_disc_client)
                 #self.socket.send(disconnect_message_format.encode())
 
             elif "LEAVE_CHATROOM" in msg_from_client:
