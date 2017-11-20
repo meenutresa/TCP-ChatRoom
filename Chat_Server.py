@@ -333,8 +333,9 @@ class Client_Thread(Thread):
                 #break;
             else:
                 if(len(msg_from_client)>0):
-                    msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(msg_from_client)
+                    msg = str(msg_from_client)
                     print("msg chat : ",msg)
+                    self.socket.send(msg.encode())
 
 
         print("Out of while loop")
