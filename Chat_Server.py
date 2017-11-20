@@ -249,7 +249,7 @@ class Client_Thread(Thread):
                 tcp_socket.shutdown()
                 tcp_socket.close()
                 break;
-                
+
             elif "HELO" in msg_from_client:
                 print("Message : ", msg_from_client)
                 conv_message_1 = msg_from_client.split(':')
@@ -341,7 +341,7 @@ class Client_Thread(Thread):
 
 
         print("Out of while loop")
-        sys.exit()
+        #sys.exit()
         #sys.exit()
 
 
