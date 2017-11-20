@@ -141,10 +141,10 @@ class Client_Thread(Thread):
         del user_fileno[(leave_roomref,self.join_id)]
 
     def delete_user_fileno_leave_disco(self,disc_roomref,disc_joinid):
-        print("disc_roomref: ",disc_roomref)
-        print("disc_joinid : ",disc_joinid)
-        print("user_fileno : ", user_fileno
         try:
+            print("disc_roomref: ",disc_roomref)
+            print("disc_joinid : ",disc_joinid)
+            print("user_fileno : ", user_fileno)
             del user_fileno[(disc_roomref,disc_joinid)]
         except KeyError as e:
             pass
