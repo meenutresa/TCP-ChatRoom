@@ -204,6 +204,7 @@ class Client_Thread(Thread):
                 self.socket.send(message.encode())
             elif "KILL_SERVICE" in msg_from_client:
                 #flag =0
+                print("Message in KILL_SERVICE : ", msg_from_client)
                 tcp_socket.close()
                 #break;
                 #tcp_socket.close(
