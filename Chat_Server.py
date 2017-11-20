@@ -264,7 +264,7 @@ class Client_Thread(Thread):
                 host_name = socket.gethostname()
                 host_ip = socket.gethostbyname(host_name)
                 host_port = port
-                message = str(conv_message_1[0])+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
+                message = str(conv_message_1[0])+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
                 self.socket.send(message.encode())
 
             elif "DISCONNECT" in msg_from_client:
