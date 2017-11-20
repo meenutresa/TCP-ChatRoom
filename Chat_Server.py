@@ -327,6 +327,7 @@ class Client_Thread(Thread):
                 print("room_user",room_user)
                 if flag < 1:
                     raise error
+                break;
 
             elif "LEAVE_CHATROOM" in msg_from_client:
                 print("Message : ", msg_from_client)
