@@ -193,7 +193,7 @@ class Client_Thread(Thread):
                 self.socket.send(join_msgto_client.encode())
                 allusers_in_room = self.get_users_in_room_chat_conv(join_room_ref)
                 #print("\nall users in room :",allusers_in_room)
-                join_message_to_room = str(self.client_name) + " has joined this chatroom\n"
+                join_message_to_room = str(self.client_name) + " has joined this chatroom"
                 join_message_to_room_format = "CHAT: "+ str(join_room_ref) + "\nCLIENT_NAME: "+str(self.client_name) + "\nMESSAGE: "+str(join_message_to_room)+"\n"
                 lock.acquire()
                 #print("\nsend_queues :" , send_queues)
@@ -236,7 +236,7 @@ class Client_Thread(Thread):
                 #self.socket.send(msg.encode())
                 for dr in roomlist_of_disc_client:
                     print("rooms_refs : ",dr)
-                    disconnect_message_format = "CHAT: "+str(dr)+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
+                    disconnect_message_format = "CHAT: "+str(dr)+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n"
                     allusers_in_room = self.get_users_in_room_chat_conv(dr)
                     print("allusers_in_room",allusers_in_room)
                     #self.socket.send(disconnect_message_format.encode())
@@ -273,7 +273,7 @@ class Client_Thread(Thread):
                 msg = "LEFT_CHATROOM: " + str(leave_room_ref) + "\nJOIN_ID: " + str(leave_join_id)+"\n"
                 self.socket.send(msg.encode())
                 message = leave_client_name + " has left this chatroom!!!"
-                leave_message_format = "CHAT: "+ str(leave_room_ref) + "\nCLIENT_NAME: "+str(leave_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
+                leave_message_format = "CHAT: "+ str(leave_room_ref) + "\nCLIENT_NAME: "+str(leave_client_name) + "\nMESSAGE: "+str(message)+"\n"
                 allusers_in_room = self.get_users_in_room_chat_conv(leave_room_ref)
                 lock.acquire()
                 #del send_queues[self.socket.fileno()]
@@ -306,7 +306,7 @@ class Client_Thread(Thread):
                 conv_message = msg_split[7]
                 for msgsp in msg_split[8:]:
                     conv_message = conv_message +" "+ msgsp
-                msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(conv_message) + "\n\n"
+                msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(conv_message) + "\n"
                 #print("Room_Ref : ", self.room_ref)
                 #for rr in user_room:
                 #    print(rr)
