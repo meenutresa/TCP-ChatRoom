@@ -86,6 +86,9 @@ class Client_Thread(Thread):
                 return
         room_user[self.client_name] = [join_roomref]
 
+    def remove_room_user_dico(self,disc_roomref):
+        room_user[self.client_name].remove(disc_roomref)
+
     def get_room_user_disco(self,disc_client_name):
         return room_user[disc_client_name]
 
@@ -247,6 +250,7 @@ class Client_Thread(Thread):
                     for ts in Tosend_fileno:
                         self.broadcast(ts)
                     self.remove_user_from_room_leave_disco(dr,diconnect_joinid)
+                    self.remove_room_user_dico(dr)
                     self.reduce_roomcount_user_disco(diconnect_joinid)
                     self.delete_user_fileno_leave_disco(dr,diconnect_joinid)
                     #print(user_room)
@@ -279,6 +283,7 @@ class Client_Thread(Thread):
                 for ts in Tosend_fileno:
                     self.broadcast(ts)
                 self.remove_user_from_room_leave(leave_room_ref)
+                self.remove_room_user_dico(leave_room_ref)
                 self.reduce_roomcount_user()
                 self.delete_user_fileno_leave(leave_room_ref)
                 print(user_room)
