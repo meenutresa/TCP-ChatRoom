@@ -419,7 +419,7 @@ while True:
     print("Server active. Waiting for Clients to join...")
     try:
         (client_soc,(client_ip,client_port)) = tcp_socket.accept()
-     except OSError as err:
+    except OSError as err:
         sys.exit()
     # CLient connected
     no_of_clients_connected = no_of_clients_connected + 1
