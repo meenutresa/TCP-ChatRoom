@@ -169,7 +169,7 @@ class Client_Thread(Thread):
         #self.socket.send(message.encode())
         msg_from_client=self.socket.recv(buff_size).decode()
         if "HELO" in msg_from_client:
-            message = str(conv_message_1[0])+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
+            message = str(msg_from_client)+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
             self.socket.send(message.encode())
         username = "<" + client_ip + "," + str(client_port) + ">"
         print("from thread no : of threads : " + str(no_of_clients_connected))
