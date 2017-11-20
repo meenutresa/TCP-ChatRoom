@@ -323,7 +323,7 @@ class Client_Thread(Thread):
                 lock.release()
                 for ts in Tosend_fileno:
                     self.broadcast(ts)
-                #self.socket.send(msg.encode())
+                self.socket.send(msg.encode())
                 #print("from thread no : of threads : " + str(no_of_clients_connected))
         print("Out of while loop")
         sys.exit()
