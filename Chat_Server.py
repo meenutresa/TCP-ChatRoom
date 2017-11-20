@@ -215,7 +215,7 @@ class Client_Thread(Thread):
                 host_name = socket.gethostname()
                 host_ip = socket.gethostbyname(host_name)
                 host_port = port
-                message = msg_from_client+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n"
+                message = msg_from_client+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n\n\n"
                 self.socket.send(message.encode())
 
             elif "KILL_SERVICE" in msg_from_client:
@@ -237,7 +237,7 @@ class Client_Thread(Thread):
                 #self.socket.send(msg.encode())
                 for dr in roomlist_of_disc_client:
                     print("rooms_refs : ",dr)
-                    disconnect_message_format = "CHAT: "+str(dr)+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n"
+                    disconnect_message_format = "CHAT: "+str(dr)+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
                     allusers_in_room = self.get_users_in_room_chat_conv(dr)
                     print("allusers_in_room",allusers_in_room)
                     #self.socket.send(disconnect_message_format.encode())
