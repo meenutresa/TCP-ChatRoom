@@ -214,11 +214,11 @@ class Client_Thread(Thread):
         lock.release()
         for ts in Tosend_fileno:
             self.broadcast(ts)
-            
+
         while True:
             #print("TRUE")
             msg_from_client=self.socket.recv(buff_size).decode()
-            print("message inside loop: ",msg_from_client)
+            #print("message inside loop: ",msg_from_client)
             if flag!=1:
                 print("Client_Threads",client_threads)
                 print("Client_Threads",self.client_nam)
