@@ -225,6 +225,7 @@ class Client_Thread(Thread):
                 #self.socket.send(msg.encode())
                 flag=0
                 for dr in roomlist_of_disc_client:
+                    flag=1
                     print("chatroom_dict",chatroom_dict)
                     print("user_dict",user_dict)
                     print("user_room",user_room)
@@ -262,6 +263,9 @@ class Client_Thread(Thread):
                     #print("Break")
                 #self.socket.send(disconnect_message_format.encode())
                 room_user.pop(self.client_name, None)
+                if flag!=1:
+                    msg = "ERROR_CODE: "+str(1)+"\nERROR_DESCRIPTION: error occured\n\n"
+                    self.socket.send(msg.encode())
 
                 print("room_user",room_user)
             elif "JOIN_CHATROOM" in msg_from_client:
