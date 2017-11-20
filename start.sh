@@ -1,1 +1,2 @@
-python Chat_Server.py $1
+git pull
+python3 Chat_Server.py $1
