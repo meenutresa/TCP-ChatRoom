@@ -246,14 +246,10 @@ class Client_Thread(Thread):
                 #tcp_socket.shutdown()
                 #message = "HELO "+str(message)+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
                 #self.socket.send(message.encode())
+                tcp_socket.shutdown()
                 tcp_socket.close()
-                break
-                try:
-                    tcp_socket.close()
-                except:
-                    pass
-
                 break;
+                
             elif "HELO" in msg_from_client:
                 print("Message : ", msg_from_client)
                 conv_message_1 = msg_from_client.split(':')
