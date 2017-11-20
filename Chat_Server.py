@@ -81,7 +81,7 @@ class Client_Thread(Thread):
             if user == self.join_id:
                 room_user[self.client_name].append(join_roomref)
                 return
-        room_user[self.client_name] = join_roomref
+        room_user[self.client_name] = [join_roomref]
 
     def get_room_user_disco(self,disc_client_name):
         return room_user[disc_client_name]
