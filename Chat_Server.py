@@ -93,7 +93,7 @@ class Client_Thread(Thread):
         try:
             return room_user[self.client_name]
         except KeyError as e:
-            pass
+            retun []
 
     def reduce_roomcount_user(self):
         roomcount_user[self.join_id] = roomcount_user[self.join_id]-1
