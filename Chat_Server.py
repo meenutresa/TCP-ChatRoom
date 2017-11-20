@@ -218,7 +218,8 @@ class Client_Thread(Thread):
                 self.socket.send(message.encode())
             elif "KILL_SERVICE" in msg_from_client:
                 print("Message : ", msg_from_client)
-                tcp_socket.close()
+                break;
+
             elif "DISCONNECT" in msg_from_client:
                 print("Message : ", msg_from_client)
                 msg_split = re.findall(r"[\w']+", msg_from_client)
@@ -318,6 +319,7 @@ class Client_Thread(Thread):
                 #self.socket.send(msg.encode())
                 #print("from thread no : of threads : " + str(no_of_clients_connected))
         print("Out of while loop")
+        tcp_socket.close()
 
 
 """
