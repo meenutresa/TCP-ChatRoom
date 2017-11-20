@@ -295,9 +295,6 @@ class Client_Thread(Thread):
                     print("roomcount_user",roomcount_user)
                     print("room_user",room_user)
                     print("user_fileno",user_fileno)
-                    flag=flag+1
-                    if flag==2:
-                        raise error
                     print("rooms_refs : ",dr)
                     disconnect_message_format = "CHAT: "+str(dr)+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
                     allusers_in_room = self.get_users_in_room_chat_conv(dr)
@@ -321,11 +318,15 @@ class Client_Thread(Thread):
                     #print("roomlist_of_disc_client_after delete",roomlist_of_disc_client)
                     self.remove_user_from_room_leave(dr)
                     self.delete_user_fileno_leave(dr)
-                    self.remove_room_user_dico(dr)
+                    #self.remove_room_user_dico(dr)
                     self.reduce_roomcount_user()
                     #print(user_room)
                     #print("Break")
                 #self.socket.send(disconnect_message_format.encode())
+                room_user.pop(self.client_name, None)
+                print("room_user",room_user)
+                if flag = 0:
+                    raise error
 
             elif "LEAVE_CHATROOM" in msg_from_client:
                 print("Message : ", msg_from_client)
