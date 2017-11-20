@@ -244,8 +244,8 @@ class Client_Thread(Thread):
             elif "KILL_SERVICE" in msg_from_client:
                 print("Message : ", msg_from_client)
                 #tcp_socket.shutdown()
-                message = "HELO "+str(message)+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
-                self.socket.send(message.encode())
+                #message = "HELO "+str(message)+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
+                #self.socket.send(message.encode())
                 tcp_socket.close()
                 break;
             elif "HELO" in msg_from_client:
