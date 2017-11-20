@@ -203,13 +203,13 @@ class Client_Thread(Thread):
                 for dr in roomlist_of_disc_client:
                     print("rooms_refs : ",dr)
                     disconnect_message_format = "CHAT: 1"+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
-                    allusers_in_room = self.get_users_in_room_chat_conv(dr)
+                    allusers_in_room = self.get_users_in_room_chat_conv(1)
                     lock.acquire()
                     #del send_queues[self.socket.fileno()]
                     Tosend_fileno = []
                     for user_id in allusers_in_room:
                         #print("userid : ",user_id)
-                        Tosend_fileno.append(self.get_user_fileno_gen(dr,user_id))
+                        Tosend_fileno.append(self.get_user_fileno_gen(1,user_id))
                     for i, j in zip(send_queues.values(), send_queues):
                         if j in Tosend_fileno:
                             i.put(disconnect_message_format)
