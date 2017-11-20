@@ -215,11 +215,13 @@ class Client_Thread(Thread):
                 host_name = socket.gethostname()
                 host_ip = socket.gethostbyname(host_name)
                 host_port = port
-                message = "HELO "+str(message)+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
+                message = "HELO "+str(message)+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n"
                 self.socket.send(message.encode())
             elif "KILL_SERVICE" in msg_from_client:
                 print("Message : ", msg_from_client)
                 #tcp_socket.shutdown()
+                message = "HELO "+str(message)+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n"
+                self.socket.send(message.encode())
                 tcp_socket.close()
                 break;
 
@@ -304,7 +306,7 @@ class Client_Thread(Thread):
                 conv_message = msg_split[7]
                 for msgsp in msg_split[8:]:
                     conv_message = conv_message +" "+ msgsp
-                msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(conv_message) + "\n"
+                msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(conv_message) + "\n\n"
                 #print("Room_Ref : ", self.room_ref)
                 #for rr in user_room:
                 #    print(rr)
