@@ -178,7 +178,10 @@ class Client_Thread(Thread):
                 print("Message : ", msg_from_client)
                 pass
             elif "DISCONNECT" in msg_from_client:
-                pass
+                msg_split = re.findall(r"[\w']+", msg_from_client)
+                disconnect_client_name = msg_split[5]
+                message = leave_client_name + " has disconnected!!!"
+                self.socket.send(msg.encode())
 
             elif "LEAVE_CHATROOM" in msg_from_client:
                 print("Message : ", msg_from_client)
