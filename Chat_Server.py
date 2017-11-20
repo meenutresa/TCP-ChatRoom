@@ -211,10 +211,12 @@ class Client_Thread(Thread):
                     self.broadcast(ts)
             elif "HELO" in msg_from_client:
                 print("Message : ", msg_from_client)
+                msg_split = re.findall(r"[\w']+", msg_from_client)
+                message = msg_split[1]
                 host_name = socket.gethostname()
                 host_ip = socket.gethostbyname(host_name)
                 host_port = port
-                message = str(msg_from_client)+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n"
+                message = "HELO"+str(message)+"\nIP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n"
                 self.socket.send(message.encode())
             elif "KILL_SERVICE" in msg_from_client:
                 print("Message : ", msg_from_client)
