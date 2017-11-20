@@ -95,6 +95,8 @@ class Client_Thread(Thread):
             del roomcount_user[self.join_id]
 
     def reduce_roomcount_user_disco(self,disc_joinid):
+        print("disc_joinid",disc_joinid)
+        print("roomcount_user",roomcount_user)
         roomcount_user[disc_joinid] = roomcount_user[disc_joinid]-1
         if roomcount_user[disc_joinid] == 0:
             del roomcount_user[disc_joinid]
@@ -134,6 +136,9 @@ class Client_Thread(Thread):
         del user_fileno[(leave_roomref,self.join_id)]
 
     def delete_user_fileno_leave_disco(self,disc_roomref,disc_joinid):
+        print("disc_roomref: ",disc_roomref)
+        print("disc_joinid : ",disc_joinid)
+        print("user_fileno : ", user_fileno)
         del user_fileno[(disc_roomref,disc_joinid)]
 
     def broadcast(self,file_no):
@@ -215,7 +220,7 @@ class Client_Thread(Thread):
                 disconnect_client_name = msg_split[5]
                 diconnect_joinid = self.get_clientID_disco(disconnect_client_name)
                 roomlist_of_disc_client = self.get_room_user_disco(disconnect_client_name)
-                message = leave_client_name + " has disconnected!!!"
+                message = disconnect_client_name + " has disconnected!!!"
                 print("roomlist_of_disc_client",roomlist_of_disc_client)
                 #self.socket.send(msg.encode())
                 for dr in roomlist_of_disc_client:
@@ -237,8 +242,8 @@ class Client_Thread(Thread):
                     for ts in Tosend_fileno:
                         self.broadcast(ts)
                     self.remove_user_from_room_leave_disco(dr,diconnect_joinid)
-                    #self.reduce_roomcount_user_disco(diconnect_joinid)
-                    #self.delete_user_fileno_leave_disco(dr,diconnect_joinid)
+                    self.reduce_roomcount_user_disco(diconnect_joinid)
+                    self.delete_user_fileno_leave_disco(dr,diconnect_joinid)
                     #print(user_room)
                     #print("Break")
                 #self.socket.send(disconnect_message_format.encode())
