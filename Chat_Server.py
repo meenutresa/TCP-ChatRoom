@@ -322,7 +322,7 @@ class Client_Thread(Thread):
                 print("Break")
 
             else:
-                if len(msg_from_client)0:
+                if len(msg_from_client)>0:
                     if "CHAT:" in msg_from_client:
                         print("Message : ", msg_from_client)
                         message = msg_from_client
