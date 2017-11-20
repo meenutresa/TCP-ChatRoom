@@ -79,12 +79,12 @@ class Client_Thread(Thread):
     def set_room_user(self,join_roomref):
         for user in room_user:
             if user == self.join_id:
-                room_user[self.join_id].append(join_roomref)
+                room_user[self.client_name].append(join_roomref)
                 return
-        room_user[self.join_id] = join_roomref
+        room_user[self.client_name] = join_roomref
 
-    def get_room_user_disco(self,disc_joinid):
-        return room_user[disc_joinid]
+    def get_room_user_disco(self,disc_client_name):
+        return room_user[disc_client_name]
 
     def reduce_roomcount_user(self):
         roomcount_user[self.join_id] = roomcount_user[self.join_id]-1
@@ -197,7 +197,7 @@ class Client_Thread(Thread):
                 msg_split = re.findall(r"[\w']+", msg_from_client)
                 disconnect_client_name = msg_split[5]
                 diconnect_joinid = self.get_clientID_disco(disconnect_client_name)
-                roomlist_of_disc_client = get_room_user_disco(diconnect_joinid)
+                roomlist_of_disc_client = get_room_user_disco(disconnect_client_name)
                 message = leave_client_name + " has disconnected!!!"
                 for dr in roomlist_of_disc_client:
                     disconnect_message_format = "CHAT: "+ str(dr) + "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
