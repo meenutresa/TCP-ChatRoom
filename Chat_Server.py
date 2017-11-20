@@ -400,6 +400,7 @@ port2 = 5000
 tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 tcp_socket.bind(('',port))
+tcp_socket.listen(6)
 
 #tcp_socket2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 #tcp_socket2.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -407,7 +408,6 @@ tcp_socket.bind(('',port))
 
 client_threads = []
 while True:
-    #tcp_socket.listen(6)
 
     print("Server active. Waiting for Clients to join...")
 
