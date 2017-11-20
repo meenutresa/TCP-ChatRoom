@@ -325,9 +325,7 @@ class Client_Thread(Thread):
                 #self.socket.send(disconnect_message_format.encode())
                 room_user.pop(self.client_name, None)
                 print("room_user",room_user)
-                if flag < 1:
-                    raise error
-                break;
+                
 
             elif "LEAVE_CHATROOM" in msg_from_client:
                 print("Message : ", msg_from_client)
