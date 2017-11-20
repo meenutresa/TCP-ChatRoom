@@ -208,7 +208,7 @@ class Client_Thread(Thread):
                 print(user_room)
                 print("Break")
                 #break;
-            else:
+            elif "CHAT" in msg_from_client:
                 print("Message : ", msg_from_client)
                 message = msg_from_client
                 print("Message : ", message)
