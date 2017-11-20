@@ -325,7 +325,7 @@ class Client_Thread(Thread):
                 #self.socket.send(disconnect_message_format.encode())
                 room_user.pop(self.client_name, None)
                 print("room_user",room_user)
-                
+
 
             elif "LEAVE_CHATROOM" in msg_from_client:
                 print("Message : ", msg_from_client)
@@ -353,7 +353,7 @@ class Client_Thread(Thread):
                 for ts in Tosend_fileno:
                     self.broadcast(ts)
                 self.remove_user_from_room_leave(leave_room_ref)
-                #self.remove_room_user_dico(leave_room_ref)
+                self.remove_room_user_dico(leave_room_ref)
                 self.reduce_roomcount_user()
                 self.delete_user_fileno_leave(leave_room_ref)
                 print(user_room)
