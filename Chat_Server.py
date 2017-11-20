@@ -218,7 +218,7 @@ class Client_Thread(Thread):
                 self.socket.send(message.encode())
             elif "KILL_SERVICE" in msg_from_client:
                 print("Message : ", msg_from_client)
-                pass
+                tcp_socket.close()
             elif "DISCONNECT" in msg_from_client:
                 print("Message : ", msg_from_client)
                 msg_split = re.findall(r"[\w']+", msg_from_client)
