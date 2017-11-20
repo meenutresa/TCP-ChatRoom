@@ -98,8 +98,8 @@ class Client_Thread(Thread):
             del roomcount_user[self.join_id]
 
     def reduce_roomcount_user_disco(self,disc_joinid):
-        print("disc_joinid",disc_joinid)
-        print("roomcount_user",roomcount_user)
+        #print("disc_joinid",disc_joinid)
+        #print("roomcount_user",roomcount_user)
         roomcount_user[disc_joinid] = roomcount_user[disc_joinid]-1
         if roomcount_user[disc_joinid] == 0:
             del roomcount_user[disc_joinid]
@@ -110,9 +110,9 @@ class Client_Thread(Thread):
         user_room[leave_roomref].remove(self.join_id)
 
     def remove_user_from_room_leave_disco(self,disc_roomref,disc_joinid):
-        print("disc_roomref",disc_roomref)
-        print("disc_joinid",disc_joinid)
-        print("user_room",user_room)
+        #print("disc_roomref",disc_roomref)
+        #print("disc_joinid",disc_joinid)
+        #print("user_room",user_room)
         for jid in user_room[disc_roomref]:
             if jid == disc_joinid:
                 user_room[disc_roomref].remove(disc_joinid)
@@ -218,6 +218,8 @@ class Client_Thread(Thread):
                 self.socket.send(message.encode())
             elif "KILL_SERVICE" in msg_from_client:
                 print("Message : ", msg_from_client)
+                msg = "KILL_SERVICE: " + str(leave_room_ref) + "\nJOIN_ID: " + str(leave_join_id)+"\n"
+                self.socket.send(msg.encode())
                 break;
 
             elif "DISCONNECT" in msg_from_client:
@@ -227,7 +229,7 @@ class Client_Thread(Thread):
                 diconnect_joinid = self.get_clientID_disco(disconnect_client_name)
                 roomlist_of_disc_client = self.get_room_user_disco(disconnect_client_name)
                 message = disconnect_client_name + " has disconnected!!!"
-                print("roomlist_of_disc_client",roomlist_of_disc_client)
+                #print("roomlist_of_disc_client",roomlist_of_disc_client)
                 #self.socket.send(msg.encode())
                 for dr in roomlist_of_disc_client:
                     print("rooms_refs : ",dr)
@@ -248,7 +250,9 @@ class Client_Thread(Thread):
                     for ts in Tosend_fileno:
                         self.broadcast(ts)
                     self.remove_user_from_room_leave_disco(dr,diconnect_joinid)
-                    #self.remove_room_user_dico(dr)
+                    print("roomlist_of_disc_client before delete",roomlist_of_disc_client)
+                    self.remove_room_user_dico(dr)
+                    print("roomlist_of_disc_client_after delete",roomlist_of_disc_client)
                     self.reduce_roomcount_user_disco(diconnect_joinid)
                     self.delete_user_fileno_leave_disco(dr,diconnect_joinid)
                     #print(user_room)
@@ -320,7 +324,7 @@ class Client_Thread(Thread):
                 #print("from thread no : of threads : " + str(no_of_clients_connected))
         print("Out of while loop")
         tcp_socket.close()
-        sys.exit()
+        #sys.exit()
 
 
 """
