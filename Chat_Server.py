@@ -141,7 +141,10 @@ class Client_Thread(Thread):
         del user_fileno[(leave_roomref,self.join_id)]
 
     def delete_user_fileno_leave_disco(self,disc_roomref,disc_joinid):
-        del user_fileno[(disc_roomref,disc_joinid)]
+        try:
+            del user_fileno[(disc_roomref,disc_joinid)]
+        except KeyError as e:
+            pass
 
     def broadcast(self,file_no):
         try:
@@ -244,7 +247,7 @@ class Client_Thread(Thread):
                     for ts in Tosend_fileno:
                         self.broadcast(ts)
                     self.remove_user_from_room_leave_disco(dr,diconnect_joinid)
-                    self.remove_room_user_dico(dr)
+                    #self.remove_room_user_dico(dr)
                     self.reduce_roomcount_user_disco(diconnect_joinid)
                     self.delete_user_fileno_leave_disco(dr,diconnect_joinid)
                     #print(user_room)
@@ -277,7 +280,7 @@ class Client_Thread(Thread):
                 for ts in Tosend_fileno:
                     self.broadcast(ts)
                 self.remove_user_from_room_leave(leave_room_ref)
-                self.remove_room_user_dico(leave_room_ref)
+                #self.remove_room_user_dico(leave_room_ref)
                 self.reduce_roomcount_user()
                 self.delete_user_fileno_leave(leave_room_ref)
                 print(user_room)
