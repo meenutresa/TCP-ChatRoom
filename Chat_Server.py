@@ -270,7 +270,7 @@ class Client_Thread(Thread):
                 leave_room_ref = int(msg_split[1])
                 leave_join_id = msg_split[3]
 
-                msg = "LEFT_CHATROOM: " + str(leave_room_ref) + "\nJOIN_ID: " + str(leave_join_id)+"\n"
+                msg = "LEFT_CHATROOM: " + str(leave_room_ref) + "\nJOIN_ID: " + str(leave_join_id)+"\n\n"
                 self.socket.send(msg.encode())
                 message = leave_client_name + " has left this chatroom!!!"
                 leave_message_format = "CHAT: "+ str(leave_room_ref) + "\nCLIENT_NAME: "+str(leave_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
