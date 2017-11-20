@@ -89,8 +89,8 @@ class Client_Thread(Thread):
     def remove_room_user_dico(self,disc_roomref):
         room_user[self.client_name].remove(disc_roomref)
 
-    def get_room_user_disco(self,disc_client_name):
-        return room_user[disc_client_name]
+    def get_room_user_disco(self):
+        return room_user[self.client_name]
 
     def reduce_roomcount_user(self):
         roomcount_user[self.join_id] = roomcount_user[self.join_id]-1
@@ -253,7 +253,7 @@ class Client_Thread(Thread):
                 print("room_user",room_user)
                 print("user_fileno",user_fileno)
                 print("send_queue_fileno_client",send_queue_fileno_client)
-                
+
                 #tcp_socket.shutdown()
                 #message = "HELO "+str(message)+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
                 #self.socket.send(message.encode())
@@ -279,8 +279,10 @@ class Client_Thread(Thread):
                 #print("conv_message_1",conv_message_1)
                 msg_split = re.findall(r"[\w']+", msg_from_client)
                 disconnect_client_name = msg_split[5]
-                diconnect_joinid = self.get_clientID_disco(disconnect_client_name)
-                roomlist_of_disc_client = self.get_room_user_disco(disconnect_client_name)
+                print("self.client name",self.client_name)
+                print("disconnect_client_name",disconnect_client_name)
+                diconnect_joinid = self.get_clientID_disco(disconnect_client_nam)
+                roomlist_of_disc_client = self.get_room_user_disco()
                 message = disconnect_client_name + " has disconnected!!!"
                 #print("roomlist_of_disc_client",roomlist_of_disc_client)
                 #self.socket.send(msg.encode())
