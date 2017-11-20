@@ -281,7 +281,7 @@ class Client_Thread(Thread):
                 disconnect_client_name = msg_split[5]
                 print("self.client name",self.client_name)
                 print("disconnect_client_name",disconnect_client_name)
-                
+
                 diconnect_joinid = self.get_clientID_disco(disconnect_client_name)
                 roomlist_of_disc_client = self.get_room_user_disco()
                 message = disconnect_client_name + " has disconnected!!!"
@@ -295,9 +295,9 @@ class Client_Thread(Thread):
                     print("roomcount_user",roomcount_user)
                     print("room_user",room_user)
                     print("user_fileno",user_fileno)
-                    flag++
+                    flag=flag+1
                     if flag==2:
-                        print("rooms_refs : ",dr1)
+                        raise error
                     print("rooms_refs : ",dr)
                     disconnect_message_format = "CHAT: "+str(dr)+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
                     allusers_in_room = self.get_users_in_room_chat_conv(dr)
