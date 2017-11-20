@@ -303,6 +303,8 @@ class Client_Thread(Thread):
                         Tosend_fileno.append(self.get_user_fileno_gen(dr,user_id))
                     for i, j in zip(send_queues.values(), send_queues):
                         if j in Tosend_fileno:
+                            print("Tosend_fileno",Tosend_fileno)
+                            print("send_queue_fileno_client",send_queue_fileno_client)
                             i.put(disconnect_message_format)
                     lock.release()
                     for ts in Tosend_fileno:
