@@ -281,18 +281,23 @@ class Client_Thread(Thread):
                 disconnect_client_name = msg_split[5]
                 print("self.client name",self.client_name)
                 print("disconnect_client_name",disconnect_client_name)
-                print("chatroom_dict",chatroom_dict)
-                print("user_dict",user_dict)
-                print("user_room",user_room)
-                print("roomcount_user",roomcount_user)
-                print("room_user",room_user)
-                print("user_fileno",user_fileno)
-                diconnect_joinid = self.get_clientID_disco(disconnect_client_nam)
+                
+                diconnect_joinid = self.get_clientID_disco(disconnect_client_name)
                 roomlist_of_disc_client = self.get_room_user_disco()
                 message = disconnect_client_name + " has disconnected!!!"
                 #print("roomlist_of_disc_client",roomlist_of_disc_client)
                 #self.socket.send(msg.encode())
+                flag=0
                 for dr in roomlist_of_disc_client:
+                    print("chatroom_dict",chatroom_dict)
+                    print("user_dict",user_dict)
+                    print("user_room",user_room)
+                    print("roomcount_user",roomcount_user)
+                    print("room_user",room_user)
+                    print("user_fileno",user_fileno)
+                    flag++
+                    if flag==2:
+                        print("rooms_refs : ",dr1)
                     print("rooms_refs : ",dr)
                     disconnect_message_format = "CHAT: "+str(dr)+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
                     allusers_in_room = self.get_users_in_room_chat_conv(dr)
@@ -310,12 +315,14 @@ class Client_Thread(Thread):
                     lock.release()
                     for ts in Tosend_fileno:
                         self.broadcast(ts)
-                    self.remove_user_from_room_leave_disco(dr,diconnect_joinid)
+                    #self.remove_user_from_room_leave_disco(dr,diconnect_joinid)
                     #print("roomlist_of_disc_client before delete",roomlist_of_disc_client)
                     #self.remove_room_user_dico(dr)
                     #print("roomlist_of_disc_client_after delete",roomlist_of_disc_client)
-                    self.reduce_roomcount_user_disco(diconnect_joinid)
-                    self.delete_user_fileno_leave_disco(dr,diconnect_joinid)
+                    self.remove_user_from_room_leave(dr)
+                    self.delete_user_fileno_leave(dr)
+                    #self.remove_room_user_dico(leave_room_ref)
+                    self.reduce_roomcount_user()
                     #print(user_room)
                     #print("Break")
                 #self.socket.send(disconnect_message_format.encode())
