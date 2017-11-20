@@ -198,7 +198,7 @@ class Client_Thread(Thread):
             elif "KILL_SERVICE" in msg_from_client:
                 #flag =0
                 tcp_socket.close()
-                break;
+                #break;
                 #tcp_socket.close(
                 #break;
             elif "DISCONNECT" in msg_from_client:
