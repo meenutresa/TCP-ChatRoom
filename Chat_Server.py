@@ -307,6 +307,7 @@ class Client_Thread(Thread):
                 for msgsp in msg_split[8:]:
                     conv_message = conv_message +" "+ msgsp
                 msg = "CHAT: " + str(conv_room_ref) + "\nCLIENT_NAME: " + str(conv_client_name) + "\nMESSAGE: " + str(conv_message)
+                print("msg chat : ",msg)
                 #print("Room_Ref : ", self.room_ref)
                 #for rr in user_room:
                 #    print(rr)
