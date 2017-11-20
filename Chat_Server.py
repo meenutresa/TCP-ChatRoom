@@ -417,8 +417,10 @@ client_threads = []
 while True:
 
     print("Server active. Waiting for Clients to join...")
-
-    (client_soc,(client_ip,client_port)) = tcp_socket.accept()
+    try:
+        (client_soc,(client_ip,client_port)) = tcp_socket.accept()
+     except OSError as err:
+        sys.exit()
     # CLient connected
     no_of_clients_connected = no_of_clients_connected + 1
     print("no : of threads : " + str(no_of_clients_connected))
