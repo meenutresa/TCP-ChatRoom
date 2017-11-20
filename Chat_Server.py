@@ -359,7 +359,7 @@ class Client_Thread(Thread):
                 #break;
             else:
                 if(len(msg_from_client)>0):
-                    msg = str(msg_from_client)
+                    msg = "CHAT: "+str(0)+"\nCLIENT_NAME: "+self.client_name+"\n"+self.client_name+" has left this chatroom.\n\n"
                     print("msg chat : ",msg)
                     self.socket.send(msg.encode())
 
