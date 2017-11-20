@@ -90,10 +90,11 @@ class Client_Thread(Thread):
         room_user[self.client_name].remove(disc_roomref)
 
     def get_room_user_disco(self):
+        l=[]
         try:
             return room_user[self.client_name]
         except KeyError as e:
-            retun []
+            retun l
 
     def reduce_roomcount_user(self):
         roomcount_user[self.join_id] = roomcount_user[self.join_id]-1
