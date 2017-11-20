@@ -202,7 +202,7 @@ class Client_Thread(Thread):
                 #self.socket.send(msg.encode())
                 for dr in roomlist_of_disc_client:
                     print("rooms_refs : ",dr)
-                    disconnect_message_format = "CHAT: "+ str(dr) + "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
+                    disconnect_message_format = "CHAT: 1"+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
                     allusers_in_room = self.get_users_in_room_chat_conv(dr)
                     lock.acquire()
                     #del send_queues[self.socket.fileno()]
