@@ -183,6 +183,7 @@ class Client_Thread(Thread):
         #msg_from_client=self.socket.recv(buff_size).decode()
         #print("Message from Client : " +username+ ":" + msg_from_client)
         #--------------------------------------------------
+        msg_from_client=self.socket.recv(buff_size).decode()
         print("Message : ", msg_from_client)
         msg_split = re.findall(r"[\w']+", msg_from_client)
         join_chatroom = msg_split[1]
