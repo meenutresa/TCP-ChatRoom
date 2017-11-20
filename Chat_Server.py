@@ -173,16 +173,48 @@ class Client_Thread(Thread):
             host_name = socket.gethostname()
             host_ip = socket.gethostbyname(host_name)
             host_port = port
-            message = str(msg_from_client)+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n"
+            message = str(msg_from_client)+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
             self.socket.send(message.encode())
-        username = "<" + client_ip + "," + str(client_port) + ">"
-        print("from thread no : of threads : " + str(no_of_clients_connected))
+        #username = "<" + client_ip + "," + str(client_port) + ">"
+        #print("from thread no : of threads : " + str(no_of_clients_connected))
         flag=1
         #if no_of_clients_connected == 1:
         #------------------------------------------------------
         #msg_from_client=self.socket.recv(buff_size).decode()
         #print("Message from Client : " +username+ ":" + msg_from_client)
         #--------------------------------------------------
+        print("Message : ", msg_from_client)
+        msg_split = re.findall(r"[\w']+", msg_from_client)
+        join_chatroom = msg_split[1]
+        self.client_name = msg_split[7]
+        join_room_ref = self.get_roomID_join(join_chatroom)
+        self.join_id = self.get_clientID()
+        self.set_user_room_chat(join_room_ref)
+        self.set_roomcount_user()
+        self.set_room_user(join_room_ref)
+        self.set_user_fileno_chat(join_room_ref)
+        self.broadcast_data()
+        #print("user_fileno : ", user_fileno)
+        join_msgto_client = "JOINED_CHATROOM: " + str(join_chatroom) + "\nSERVER_IP: "+str(ip)+"\nPORT: "+str(port)+"\nROOM_REF: "+str(join_room_ref)+"\nJOIN_ID: "+str(self.join_id)+"\n"
+        self.socket.send(join_msgto_client.encode())
+        allusers_in_room = self.get_users_in_room_chat_conv(join_room_ref)
+        #print("\nall users in room :",allusers_in_room)
+        join_message_to_room = str(self.client_name) + " has joined this chatroom"
+        join_message_to_room_format = "CHAT: "+ str(join_room_ref) + "\nCLIENT_NAME: "+str(self.client_name) + "\nMESSAGE: "+str(join_message_to_room)+"\n\n"
+        lock.acquire()
+        #print("\nsend_queues :" , send_queues)
+        #del send_queues[self.socket.fileno()]
+        Tosend_fileno = []
+        for user_id in allusers_in_room:
+            Tosend_fileno.append(self.get_user_fileno_gen(join_room_ref,user_id))
+        for i, j in zip(send_queues.values(), send_queues):
+            if j in Tosend_fileno:
+                i.put(join_message_to_room_format)
+                #self.broadcast(j)
+        lock.release()
+        for ts in Tosend_fileno:
+            self.broadcast(ts)
+            
         while True:
             #print("TRUE")
             msg_from_client=self.socket.recv(buff_size).decode()
@@ -368,7 +400,7 @@ class Client_Thread(Thread):
                 #break;
             else:
                 if(len(msg_from_client)>0):
-                    msg = "CHAT: "+str(0)+"\nCLIENT_NAME: "+self.client_name+"\n"+self.client_name+" has left this chatroom.\n\n"
+                    msg = "CHAT: "+str(0)+"\nCLIENT_NAME: "+self.client_name+"\n"+self.client_name+" has left this chatroom."
                     print("msg chat : ",msg)
                     self.socket.send(msg.encode())
 
