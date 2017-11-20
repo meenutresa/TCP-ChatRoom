@@ -173,7 +173,7 @@ class Client_Thread(Thread):
             host_name = socket.gethostname()
             host_ip = socket.gethostbyname(host_name)
             host_port = port
-            message = str(msg_from_client)+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n"
+            message = str(msg_from_client)+"IP:"+str(host_ip)+"\nPort:"+str(host_port)+"\nStudentID:17312351\n\n"
             self.socket.send(message.encode())
         username = "<" + client_ip + "," + str(client_port) + ">"
         print("from thread no : of threads : " + str(no_of_clients_connected))
