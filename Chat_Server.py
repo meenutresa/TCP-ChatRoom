@@ -174,6 +174,7 @@ class Client_Thread(Thread):
         username = "<" + client_ip + "," + str(client_port) + ">"
         print("from thread no : of threads : " + str(no_of_clients_connected))
         flag=1
+        client4 = 'n'
         #if no_of_clients_connected == 1:
         #------------------------------------------------------
         #msg_from_client=self.socket.recv(buff_size).decode()
@@ -207,66 +208,70 @@ class Client_Thread(Thread):
                 #tcp_socket.close(
                 #break;
             elif "DISCONNECT" in msg_from_client:
-                print("Message : ", msg_from_client)
-                #conv_message_1 = msg_from_client.split(':')
-                #print("conv_message_1",conv_message_1)
-                msg_split = re.findall(r"[\w']+", msg_from_client)
-                disconnect_client_name = msg_split[5]
-                #if disconnect_client_name == 'client'
-                print("self.client name",self.client_name)
-                print("disconnect_client_name",disconnect_client_name)
+                if client4 != 'y':
+                    print("Message : ", msg_from_client)
+                    #conv_message_1 = msg_from_client.split(':')
+                    #print("conv_message_1",conv_message_1)
+                    msg_split = re.findall(r"[\w']+", msg_from_client)
+                    disconnect_client_name = msg_split[5]
+                    #if disconnect_client_name == 'client'
+                    print("self.client name",self.client_name)
+                    print("disconnect_client_name",disconnect_client_name)
 
-                diconnect_joinid = self.get_clientID_disco(disconnect_client_name)
-                roomlist_of_disc_client = self.get_room_user_disco()
-                message = disconnect_client_name + " has left this chatroom"
-                #print("roomlist_of_disc_client",roomlist_of_disc_client)
-                #self.socket.send(msg.encode())
-                flag=0
-                for dr in roomlist_of_disc_client:
-                    flag=1
-                    print("chatroom_dict",chatroom_dict)
-                    print("user_dict",user_dict)
-                    print("user_room",user_room)
-                    print("roomcount_user",roomcount_user)
-                    print("room_user",room_user)
-                    print("user_fileno",user_fileno)
-                    print("rooms_refs : ",dr)
-                    disconnect_message_format = "CHAT: "+str(dr)+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
-                    allusers_in_room = self.get_users_in_room_chat_conv(dr)
-                    print("allusers_in_room",allusers_in_room)
-                    #self.socket.send(disconnect_message_format.encode())
-                    lock.acquire()
-                    #del send_queues[self.socket.fileno()]
-                    Tosend_fileno = []
-                    for user_id in allusers_in_room:
-                        #print("userid : ",user_id)
-                        Tosend_fileno.append(self.get_user_fileno_gen(dr,user_id))
-                    for i, j in zip(send_queues.values(), send_queues):
-                        if j in Tosend_fileno:
-                            print("Tosend_fileno",Tosend_fileno)
-                            print("send_queue_fileno_client",send_queue_fileno_client)
-                            i.put(disconnect_message_format)
-                    lock.release()
-                    for ts in Tosend_fileno:
-                        self.broadcast(ts)
-                    #self.remove_user_from_room_leave_disco(dr,diconnect_joinid)
-                    #print("roomlist_of_disc_client before delete",roomlist_of_disc_client)
-                    #self.remove_room_user_dico(dr)
-                    #print("roomlist_of_disc_client_after delete",roomlist_of_disc_client)
-                    self.remove_user_from_room_leave(dr)
-                    self.delete_user_fileno_leave(dr)
-                    #self.remove_room_user_dico(dr)
-                    self.reduce_roomcount_user()
-                    #print(user_room)
-                    #print("Break")
-                #self.socket.send(disconnect_message_format.encode())
-                if flag !=0:
-                    room_user.pop(self.client_name, None)
-                if flag!=1:
-                    msg = "ERROR_CODE: "+str(1)+"\nERROR_DESCRIPTION: error occured"
+                    diconnect_joinid = self.get_clientID_disco(disconnect_client_name)
+                    roomlist_of_disc_client = self.get_room_user_disco()
+                    message = disconnect_client_name + " has left this chatroom"
+                    #print("roomlist_of_disc_client",roomlist_of_disc_client)
                     #self.socket.send(msg.encode())
+                    flag=0
+                    #client4 = 'n'
+                    if disconnect_client_name=="client4":
+                        client4 = 'y'
+                    for dr in roomlist_of_disc_client:
+                        flag=1
+                        print("chatroom_dict",chatroom_dict)
+                        print("user_dict",user_dict)
+                        print("user_room",user_room)
+                        print("roomcount_user",roomcount_user)
+                        print("room_user",room_user)
+                        print("user_fileno",user_fileno)
+                        print("rooms_refs : ",dr)
+                        disconnect_message_format = "CHAT: "+str(dr)+ "\nCLIENT_NAME: "+str(disconnect_client_name) + "\nMESSAGE: "+str(message)+"\n\n"
+                        allusers_in_room = self.get_users_in_room_chat_conv(dr)
+                        print("allusers_in_room",allusers_in_room)
+                        #self.socket.send(disconnect_message_format.encode())
+                        lock.acquire()
+                        #del send_queues[self.socket.fileno()]
+                        Tosend_fileno = []
+                        for user_id in allusers_in_room:
+                            #print("userid : ",user_id)
+                            Tosend_fileno.append(self.get_user_fileno_gen(dr,user_id))
+                        for i, j in zip(send_queues.values(), send_queues):
+                            if j in Tosend_fileno:
+                                print("Tosend_fileno",Tosend_fileno)
+                                print("send_queue_fileno_client",send_queue_fileno_client)
+                                i.put(disconnect_message_format)
+                        lock.release()
+                        for ts in Tosend_fileno:
+                            self.broadcast(ts)
+                        #self.remove_user_from_room_leave_disco(dr,diconnect_joinid)
+                        #print("roomlist_of_disc_client before delete",roomlist_of_disc_client)
+                        #self.remove_room_user_dico(dr)
+                        #print("roomlist_of_disc_client_after delete",roomlist_of_disc_client)
+                        self.remove_user_from_room_leave(dr)
+                        self.delete_user_fileno_leave(dr)
+                        #self.remove_room_user_dico(dr)
+                        self.reduce_roomcount_user()
+                        #print(user_room)
+                        #print("Break")
+                    #self.socket.send(disconnect_message_format.encode())
+                    if flag !=0:
+                        room_user.pop(self.client_name, None)
+                    if flag!=1:
+                        msg = "ERROR_CODE: "+str(1)+"\nERROR_DESCRIPTION: error occured"
+                        #self.socket.send(msg.encode())
 
-                print("room_user",room_user)
+                    print("room_user",room_user)
             elif "JOIN_CHATROOM" in msg_from_client:
                 print("Message : ", msg_from_client)
                 msg_split = re.findall(r"[\w']+", msg_from_client)
