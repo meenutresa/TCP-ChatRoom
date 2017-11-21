@@ -206,7 +206,7 @@ class Client_Thread(Thread):
                 print("Message in KILL_SERVICE : ", msg_from_client)
                 tcp_socket.shutdown(socket.SHUT_RDWR)
                 tcp_socket.close()
-                #break;
+                break;
                 #tcp_socket.close(
                 #break;
             elif "DISCONNECT" in msg_from_client:
