@@ -181,8 +181,7 @@ class Client_Thread(Thread):
         #print("Message from Client : " +username+ ":" + msg_from_client)
         #--------------------------------------------------
         while True:
-            #print("TRUE")
-                msg_from_client=self.socket.recv(buff_size).decode()
+            msg_from_client=self.socket.recv(buff_size).decode()
             #if flag!=1:
             #    print("Client_Threads",client_threads)
             #    print("Client_Threads",self.client_nam)
