@@ -204,7 +204,7 @@ class Client_Thread(Thread):
             elif "KILL_SERVICE" in msg_from_client:
                 #flag =0
                 print("Message in KILL_SERVICE : ", msg_from_client)
-                tcp_socket.shutdown()
+                tcp_socket.shutdown(socket.SHUT_RDWR)
                 tcp_socket.close()
                 #break;
                 #tcp_socket.close(
