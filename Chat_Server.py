@@ -383,10 +383,6 @@ class Client_Thread(Thread):
                             self.socket.send(msg.encode())
                         #self.socket.send(msg.encode())
                         #print("from thread no : of threads : " + str(no_of_clients_connected))
-                    else:
-                        msg = "CHAT: "+str(0)+"\nCLIENT_NAME: "+self.client_name+"\n"+self.client_name+" has left this chatroom."
-                        print("msg chat : ",msg)
-                        self.socket.send(msg.encode())
 
         print("Out of while loop")
         #sys.exit()
