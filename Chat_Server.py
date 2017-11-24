@@ -6,14 +6,14 @@ from threading import Thread
 import re
 import random
 
-no_of_clients_connected = 0
-chatroom_dict = {}
-user_dict = {}
-user_room = {}
-roomcount_user = {}
-room_user = {}
-user_fileno = {}
-send_queue_fileno_client = {}
+no_of_clients_connected = 0 # no:of clients connected
+chatroom_dict = {} #  To store chatroom numbers and chat room ref with chatroom as the key
+user_dict = {} # To store user name and join id with username as key
+user_room = {} # To store join ids in each of the rooms with room ref as key
+roomcount_user = {} #To store the number of rooms assigned to a user with join id as key
+room_user = {} # To store the rooms assigned to each of the users with user name as id
+user_fileno = {} # To store the file descriptor of each client socket with room ref and join id as key
+send_queue_fileno_client = {} # To store the socket details of each client
 
 class Client_Thread(Thread):
     def __init__(self,socket,ip,port):
@@ -27,6 +27,7 @@ class Client_Thread(Thread):
         self.join_id = 0
         print ("New Client Thread started")
 
+    #The method to generate room refs
     def get_roomID(self):
         for chatrm in chatroom_dict:
             if chatrm == self.chatroom:
@@ -34,6 +35,8 @@ class Client_Thread(Thread):
         value = len(chatroom_dict)+1
         chatroom_dict[self.chatroom.lower()]=value
         return value
+
+    #The method to get room refs by passing chatroom name
     def get_roomID_join(self,chat_chatroom):
         for chatrm in chatroom_dict:
             if chatrm == chat_chatroom:
@@ -42,26 +45,32 @@ class Client_Thread(Thread):
         chatroom_dict[chat_chatroom.lower()]=value
         return value
 
+    # The method to generate join id
     def get_clientID(self):
         for id in user_dict:
             if id == self.client_name:
                 return user_dict[self.client_name]
         return self.set_clientID()
 
+    #The method to get join id by passing client name
     def get_clientID_disco(self,disc_clientname):
         return user_dict[disc_clientname]
 
+    # The method to set join id
     def set_clientID(self):
         value = len(user_dict)+1
         user_dict[self.client_name]=value
         return value
 
+    # The method to set join ids in each of the room refs
     def set_user_room(self):
         for room in user_room:
             if self.room_ref == room:
                 user_room[self.room_ref].append(self.join_id)
                 return
         user_room[self.room_ref] = [self.join_id]
+
+    # The method to set userroom dict
     def set_user_room_chat(self,chat_roomref):
         for room in user_room:
             if chat_roomref == room:
@@ -69,6 +78,7 @@ class Client_Thread(Thread):
                 return
         user_room[chat_roomref] = [self.join_id]
 
+    # The method to set roomcount_user dict
     def set_roomcount_user(self):
         for user in roomcount_user:
             if user == self.join_id:
@@ -76,6 +86,7 @@ class Client_Thread(Thread):
                 return
         roomcount_user[self.join_id] = 1
 
+    #The method to set room_user dict
     def set_room_user(self,join_roomref):
         for user in room_user:
             if user == self.client_name:
@@ -86,9 +97,11 @@ class Client_Thread(Thread):
                 return
         room_user[self.client_name] = [join_roomref]
 
+    #The method to delete element from room roofs assigned to users
     def remove_room_user_dico(self,disc_roomref):
         room_user[self.client_name].remove(disc_roomref)
 
+    #The method to get value room_user dict
     def get_room_user_disco(self):
         l=[]
         try:
@@ -96,11 +109,13 @@ class Client_Thread(Thread):
         except KeyError as e:
             return l
 
+    #The method to reduce the number of room count per join id
     def reduce_roomcount_user(self):
         roomcount_user[self.join_id] = roomcount_user[self.join_id]-1
         if roomcount_user[self.join_id] == 0:
             del roomcount_user[self.join_id]
 
+    #The method to reduce the number of room count per join id when joinid is passed as argument
     def reduce_roomcount_user_disco(self,disc_joinid):
         #print("disc_joinid",disc_joinid)
         #print("roomcount_user",roomcount_user)
@@ -111,11 +126,15 @@ class Client_Thread(Thread):
         except:
             pass
 
+    #The method to remove joinid from the room when the person is left the chatroom
     def remove_user_from_room(self):
         user_room[self.room_ref].remove(self.join_id)
+
+    #The method to remove joinid from the room when the person is left the chatroom when room ref is passed as argument
     def remove_user_from_room_leave(self,leave_roomref):
         user_room[leave_roomref].remove(self.join_id)
 
+    #The method to remove joinid from the room when the person is lfet the chatroom when room ref and joinid are passed as argument
     def remove_user_from_room_leave_disco(self,disc_roomref,disc_joinid):
         #print("disc_roomref",disc_roomref)
         #print("disc_joinid",disc_joinid)
@@ -124,35 +143,44 @@ class Client_Thread(Thread):
             if jid == disc_joinid:
                 user_room[disc_roomref].remove(disc_joinid)
 
+    #The method to get all the users in a room
     def get_users_in_room(self):
         #print("get_users_in_room : ",self.room_ref)
         return user_room[self.room_ref]
 
+    #The method to get all the users in the room when room ref is passed as argument
     def get_users_in_room_chat_conv(self,conv_roomref):
         #print("get_users_in_room : ",self.room_ref)
         return user_room[conv_roomref]
 
+    #The method to set user file descriptors
     def set_user_fileno(self):
         user_fileno[(self.room_ref,self.join_id)] = self.socket.fileno()
     def set_user_fileno_chat(self,chat_roomref):
         user_fileno[(chat_roomref,self.join_id)] = self.socket.fileno()
 
+    #The method to get user file descriptors
     def get_user_fileno(self, other_join_id):
         return user_fileno[(self.room_ref,other_join_id)]
+    #The method to get user file descriptos when room ref and join id are passed as argument
     def get_user_fileno_gen(self, gen_roomref, other_join_id):
         return user_fileno[(gen_roomref,other_join_id)]
 
+    #The method to delete user file descriptor when a user leave the chat room
     def delete_user_fileno(self):
         del user_fileno[(self.room_ref,self.join_id)]
+    #The method to delete user file descriptor when a user leave the chat room when room ref is passed as argument
     def delete_user_fileno_leave(self,leave_roomref):
         del user_fileno[(leave_roomref,self.join_id)]
 
+    #The method to delete user file descriptor when a user leave the chat room when room ref and join id are passed as arguments
     def delete_user_fileno_leave_disco(self,disc_roomref,disc_joinid):
         try:
             del user_fileno[(disc_roomref,disc_joinid)]
         except KeyError as e:
             pass
 
+    #The method to send the message to client from the queue when the file descriptor is passed
     def broadcast(self,file_no):
         try:
             message = send_queues[file_no].get(False)
@@ -164,6 +192,7 @@ class Client_Thread(Thread):
         except KeyError as e:
             pass
 
+    #The method to set the socket details in send_queue_fileno_client dict
     def broadcast_data(self):
         send_queue_fileno_client[self.socket.fileno()] = self.socket
 
@@ -426,7 +455,7 @@ class Client_Broadcast_Thread(Thread):
 
 buff_size = 2048
 lock = threading.Lock()
-send_queues = {}
+send_queues = {} # To store the message to each client in a queue
 ip = '0.0.0.0'
 port = int(sys.argv[1])
 port2 = 5000
